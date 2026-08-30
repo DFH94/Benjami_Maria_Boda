@@ -791,32 +791,54 @@ export default function Home() {
                         </p>
                         {companionDetails.map((comp, idx) => (
                           <div key={idx} className="companion-detail-card">
-                            <div className="companion-card-header">
-                              <span>Acompanyant #{idx + 1}</span>
-                              <label className="companion-child-toggle">
-                                <input 
-                                  type="checkbox"
-                                  checked={comp.isChild}
-                                  onChange={(e) => handleUpdateCompanion(idx, 'isChild', e.target.checked)}
-                                />
-                                <span>És un infant / nen?</span>
-                              </label>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+                              <span style={{ fontWeight: 600, fontSize: '0.88rem', color: 'var(--primary-color)' }}>
+                                Acompanyant #{idx + 1}
+                              </span>
+
+                              {/* Two Radio Buttons: Adult vs Nen / Infant */}
+                              <div style={{ display: 'flex', gap: '12px', alignItems: 'center', background: 'rgba(197, 155, 78, 0.08)', padding: '4px 12px', borderRadius: '15px', border: '1px solid rgba(197, 155, 78, 0.25)' }}>
+                                <label style={{ display: 'inline-flex', alignItems: 'center', gap: '5px', fontSize: '0.84rem', cursor: 'pointer', fontWeight: 500 }}>
+                                  <input 
+                                    type="radio"
+                                    name={`comp-type-${idx}`}
+                                    checked={!comp.isChild}
+                                    onChange={() => handleUpdateCompanion(idx, 'isChild', false)}
+                                    style={{ accentColor: 'var(--primary-color)', cursor: 'pointer' }}
+                                  />
+                                  <span>Adult</span>
+                                </label>
+                                <label style={{ display: 'inline-flex', alignItems: 'center', gap: '5px', fontSize: '0.84rem', cursor: 'pointer', fontWeight: 500 }}>
+                                  <input 
+                                    type="radio"
+                                    name={`comp-type-${idx}`}
+                                    checked={comp.isChild}
+                                    onChange={() => handleUpdateCompanion(idx, 'isChild', true)}
+                                    style={{ accentColor: 'var(--primary-color)', cursor: 'pointer' }}
+                                  />
+                                  <span>Nen / Infant</span>
+                                </label>
+                              </div>
                             </div>
 
+                            {/* Text field for companion name */}
+                            <label style={{ display: 'block', fontSize: '0.82rem', color: 'var(--text-muted)', marginBottom: '4px' }}>
+                              Nom i cognoms de l'acompanyant:
+                            </label>
                             <input 
                               type="text"
                               className="input-field"
                               style={{ marginBottom: '10px', fontSize: '0.9rem' }}
-                              placeholder={`Nom complet de l'acompanyant #${idx + 1}`}
+                              placeholder={`Ex. Nom de l'acompanyant #${idx + 1}`}
                               value={comp.name}
                               onChange={(e) => handleUpdateCompanion(idx, 'name', e.target.value)}
                             />
 
-                            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '8px' }}>
+                            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '8px', paddingTop: '4px', borderTop: '1px dashed rgba(197, 155, 78, 0.2)' }}>
                               <span style={{ fontSize: '0.82rem', color: 'var(--text-muted)' }}>Plat:</span>
                               <div className="companion-dish-select">
                                 {comp.isChild ? (
-                                  <span style={{ fontSize: '0.82rem', color: 'var(--accent-gold-dark)', fontWeight: 600, background: 'rgba(197, 155, 78, 0.12)', padding: '2px 8px', borderRadius: '8px' }}>
+                                  <span style={{ fontSize: '0.82rem', color: 'var(--accent-gold-dark)', fontWeight: 600, background: 'rgba(197, 155, 78, 0.15)', padding: '3px 10px', borderRadius: '12px' }}>
                                     Menú Infantil
                                   </span>
                                 ) : (

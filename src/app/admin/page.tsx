@@ -467,14 +467,14 @@ export default function AdminPage() {
             </div>
 
             <div className="glass-card" style={{ padding: '25px', overflowX: 'auto' }}>
-              <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', minWidth: '760px' }}>
+              <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', minWidth: '780px' }}>
                 <thead>
                   <tr style={{ borderBottom: '2px solid rgba(140, 115, 85, 0.3)', color: 'var(--primary-color)', fontFamily: 'var(--font-title)', fontSize: '1.15rem' }}>
-                    <th style={{ padding: '16px 12px' }}>Nom i Cognoms</th>
+                    <th style={{ padding: '16px 12px' }}>Convidat Principal / Titular</th>
                     <th style={{ padding: '16px 12px' }}>Assistència</th>
-                    <th style={{ padding: '16px 12px' }}>Acompanyants (Detall)</th>
                     <th style={{ padding: '16px 12px' }}>Plat Titular</th>
-                    <th style={{ padding: '16px 12px' }}>Restriccions / Al·lèrgies</th>
+                    <th style={{ padding: '16px 12px' }}>Sub-apartat Acompanyants</th>
+                    <th style={{ padding: '16px 12px' }}>Al·lèrgies / Restriccions</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -486,57 +486,129 @@ export default function AdminPage() {
                     </tr>
                   ) : (
                     guests.map(guest => (
-                      <tr key={guest.id} style={{ borderBottom: '1px solid rgba(217, 197, 178, 0.3)', transition: 'background 0.2s ease' }}>
-                        <td style={{ padding: '16px 12px', fontWeight: 500, verticalAlign: 'top' }}>{guest.name}</td>
-                        <td style={{ padding: '16px 12px', verticalAlign: 'top' }}>
+                      <tr key={guest.id} style={{ borderBottom: '1px solid rgba(217, 197, 178, 0.35)', transition: 'background 0.2s ease', backgroundColor: guest.attending ? '#ffffff' : '#fafafa' }}>
+                        
+                        {/* Principal Guest Name */}
+                        <td style={{ padding: '18px 12px', verticalAlign: 'top' }}>
+                          <div style={{ fontWeight: 600, fontSize: '1.02rem', color: 'var(--primary-color)' }}>
+                            {guest.name}
+                          </div>
+                          <span style={{ 
+                            display: 'inline-block', 
+                            marginTop: '4px',
+                            background: 'rgba(140, 115, 85, 0.1)', 
+                            color: 'var(--primary-dark)', 
+                            fontSize: '0.72rem', 
+                            padding: '2px 8px', 
+                            borderRadius: '10px', 
+                            fontWeight: 700, 
+                            letterSpacing: '0.5px',
+                            textTransform: 'uppercase'
+                          }}>
+                            Titular
+                          </span>
+                        </td>
+
+                        {/* Attendance Status */}
+                        <td style={{ padding: '18px 12px', verticalAlign: 'top' }}>
                           <span style={{ 
                             background: guest.attending ? 'rgba(76, 175, 80, 0.12)' : 'rgba(244, 67, 54, 0.12)', 
                             color: guest.attending ? '#2e7d32' : '#c62828',
                             border: `1px solid ${guest.attending ? 'rgba(76, 175, 80, 0.3)' : 'rgba(244, 67, 54, 0.3)'}`,
-                            padding: '4px 12px', 
+                            padding: '5px 12px', 
                             borderRadius: '20px', 
                             fontSize: '0.85rem', 
-                            fontWeight: 600 
+                            fontWeight: 600,
+                            whiteSpace: 'nowrap'
                           }}>
                             {guest.attending ? '✓ Sí, assisteix' : '✗ No assisteix'}
                           </span>
                         </td>
-                        <td style={{ padding: '16px 12px', verticalAlign: 'top' }}>
+
+                        {/* Primary Guest Main Course */}
+                        <td style={{ padding: '18px 12px', verticalAlign: 'top' }}>
+                          {guest.attending ? (
+                            <span style={{ 
+                              background: 'rgba(197, 155, 78, 0.12)', 
+                              border: '1px solid rgba(197, 155, 78, 0.35)', 
+                              padding: '4px 12px', 
+                              borderRadius: '16px', 
+                              fontSize: '0.86rem', 
+                              fontWeight: 600,
+                              color: 'var(--primary-dark)',
+                              whiteSpace: 'nowrap'
+                            }}>
+                              {guest.mainCourse || 'Carn'}
+                            </span>
+                          ) : '—'}
+                        </td>
+
+                        {/* Sub-apartat Acompanyants */}
+                        <td style={{ padding: '18px 12px', verticalAlign: 'top' }}>
                           {!guest.attending || guest.companions === 0 ? (
-                            <span style={{ color: 'var(--text-muted)' }}>0 (Individual)</span>
+                            <span style={{ color: 'var(--text-muted)', fontSize: '0.88rem' }}>Sense acompanyants</span>
                           ) : (
-                            <div>
-                              <div style={{ fontWeight: 600, color: 'var(--primary-dark)', marginBottom: '6px', fontSize: '0.88rem' }}>
-                                +{guest.companions} {guest.companions === 1 ? 'acompanyant' : 'acompanyants'}:
+                            <div style={{ 
+                              background: '#fdfbf8', 
+                              borderLeft: '3px solid var(--accent-gold)', 
+                              padding: '10px 14px', 
+                              borderRadius: '0 10px 10px 0',
+                              borderTop: '1px solid rgba(197, 155, 78, 0.2)',
+                              borderRight: '1px solid rgba(197, 155, 78, 0.2)',
+                              borderBottom: '1px solid rgba(197, 155, 78, 0.2)'
+                            }}>
+                              <div style={{ fontWeight: 700, color: 'var(--primary-dark)', marginBottom: '8px', fontSize: '0.86rem', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+                                Acompanyants ({guest.companions}):
                               </div>
+
                               {guest.companionDetails && guest.companionDetails.length > 0 ? (
-                                <div style={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
+                                <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
                                   {guest.companionDetails.map((c, i) => (
                                     <div key={i} style={{ 
                                       background: '#ffffff', 
                                       border: '1px solid rgba(197, 155, 78, 0.25)', 
                                       borderRadius: '8px', 
-                                      padding: '4px 8px', 
-                                      fontSize: '0.82rem',
+                                      padding: '6px 10px', 
+                                      fontSize: '0.84rem',
                                       display: 'flex',
                                       alignItems: 'center',
                                       justifyContent: 'space-between',
-                                      gap: '8px'
+                                      gap: '10px'
                                     }}>
-                                      <span style={{ fontWeight: 500 }}>
-                                        {c.name && c.name.trim() ? c.name.trim() : `Acompanyant #${i + 1}`}
-                                      </span>
-                                      <span style={{ 
-                                        fontSize: '0.75rem', 
-                                        padding: '2px 6px', 
-                                        borderRadius: '10px', 
-                                        background: c.isChild ? 'rgba(255, 152, 0, 0.15)' : 'rgba(197, 155, 78, 0.12)',
-                                        color: c.isChild ? '#e65100' : 'var(--primary-dark)',
-                                        fontWeight: 600,
-                                        whiteSpace: 'nowrap'
-                                      }}>
-                                        {c.isChild ? 'Infant' : `Adult · ${c.mainCourse || 'Carn'}`}
-                                      </span>
+                                      <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                                        <span style={{ color: 'var(--accent-gold-dark)', fontWeight: 700 }}>↳</span>
+                                        <span style={{ fontWeight: 600, color: 'var(--text-color)' }}>
+                                          {c.name && c.name.trim() ? c.name.trim() : `Acompanyant #${i + 1}`}
+                                        </span>
+                                      </div>
+
+                                      <div style={{ display: 'flex', gap: '5px', alignItems: 'center' }}>
+                                        {/* Adult vs Nen Badge */}
+                                        <span style={{ 
+                                          fontSize: '0.74rem', 
+                                          padding: '2px 7px', 
+                                          borderRadius: '10px', 
+                                          background: c.isChild ? 'rgba(255, 152, 0, 0.15)' : 'rgba(140, 115, 85, 0.12)',
+                                          color: c.isChild ? '#e65100' : 'var(--primary-color)',
+                                          fontWeight: 700,
+                                          whiteSpace: 'nowrap'
+                                        }}>
+                                          {c.isChild ? 'Nen / Infant' : 'Adult'}
+                                        </span>
+
+                                        {/* Dish Badge */}
+                                        <span style={{ 
+                                          fontSize: '0.74rem', 
+                                          padding: '2px 7px', 
+                                          borderRadius: '10px', 
+                                          background: 'rgba(197, 155, 78, 0.12)',
+                                          color: 'var(--primary-dark)',
+                                          fontWeight: 600,
+                                          whiteSpace: 'nowrap'
+                                        }}>
+                                          {c.isChild ? 'Menú Infantil' : (c.mainCourse || 'Carn')}
+                                        </span>
+                                      </div>
                                     </div>
                                   ))}
                                 </div>
@@ -548,22 +620,9 @@ export default function AdminPage() {
                             </div>
                           )}
                         </td>
-                        <td style={{ padding: '16px 12px', verticalAlign: 'top' }}>
-                          {guest.attending ? (
-                            <span style={{ 
-                              background: 'rgba(197, 155, 78, 0.12)', 
-                              border: '1px solid rgba(197, 155, 78, 0.35)', 
-                              padding: '4px 12px', 
-                              borderRadius: '16px', 
-                              fontSize: '0.86rem', 
-                              fontWeight: 600,
-                              color: 'var(--primary-dark)'
-                            }}>
-                              {guest.mainCourse || 'Carn'}
-                            </span>
-                          ) : '—'}
-                        </td>
-                        <td style={{ padding: '16px 12px', color: guest.dietary ? 'var(--text-color)' : 'var(--text-muted)', verticalAlign: 'top' }}>
+
+                        {/* Dietary restrictions */}
+                        <td style={{ padding: '18px 12px', color: guest.dietary ? 'var(--text-color)' : 'var(--text-muted)', verticalAlign: 'top', fontSize: '0.9rem' }}>
                           {guest.dietary || '—'}
                         </td>
                       </tr>
