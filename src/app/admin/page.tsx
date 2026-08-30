@@ -673,8 +673,8 @@ export default function AdminPage() {
                           </div>
 
                           {/* 5. Dietary */}
-                          <div style={{ fontSize: '0.86rem', color: 'var(--text-muted)' }}>
-                            {guest.dietary ? `(Grup: ${guest.dietary})` : '—'}
+                          <div style={{ fontSize: '0.86rem', color: guest.dietary ? 'var(--text-color)' : 'var(--text-muted)' }}>
+                            {guest.dietary || '—'}
                           </div>
                         </div>
                       ))
