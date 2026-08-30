@@ -59,7 +59,6 @@ export default function Home() {
     { id: 'vegan', label: 'Menú Vegà' },
     { id: 'nuts', label: 'Al·lèrgia a la Fruita Seca' },
     { id: 'seafood', label: 'Al·lèrgia al Marisc / Peix' },
-    { id: 'kids', label: 'Menú Infantil' },
     { id: 'none', label: 'Cap (Menú Estàndard)' },
   ];
 
