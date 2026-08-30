@@ -20,8 +20,8 @@ export default function Home() {
   });
 
   useEffect(() => {
-    // Data i hora objectiu de la cerimònia: 11 de Juny de 2027 a les 12:30h
-    const targetDate = new Date('2027-06-11T12:30:00');
+    // Data i hora objectiu de la cerimònia (Tarda-Nit): 11 de Juny de 2027 a les 18:00h
+    const targetDate = new Date('2027-06-11T18:00:00');
 
     const updateCountdown = () => {
       const now = new Date();
@@ -397,7 +397,7 @@ export default function Home() {
                 </p>
 
                 <p style={{ fontSize: '1.05rem', color: 'var(--text-muted)', marginBottom: '22px' }}>
-                  🕒 La cerimònia començarà a les <strong>12:30h</strong> als jardins botànics de la finca. Us preguem arribar amb 15 minuts d'antelació per acomodar-vos amb tranquil·litat.
+                  🕒 La cerimònia començarà a les <strong>18:00h</strong> als jardins botànics de la finca amb la màgia del capvespre. Us preguem arribar amb 15 minuts d'antelació per acomodar-vos amb tranquil·litat.
                 </p>
 
                 {/* Practical Guest Badges */}
@@ -470,7 +470,7 @@ export default function Home() {
 
         <div className="container section-content-relative">
           <p className="text-center" style={{ fontSize: '0.85rem', letterSpacing: '4px', textTransform: 'uppercase', color: 'var(--accent-gold)', fontWeight: 600, marginBottom: '6px' }}>
-            Itinerari del Casament
+            Itinerari del Casament · Tarda & Nit
           </p>
           <h2 className="section-title">El Gran Dia</h2>
           
@@ -482,17 +482,17 @@ export default function Home() {
                 <div className="timeline-node" />
                 <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '6px' }}>
                   <span style={{ fontSize: '0.88rem', letterSpacing: '2px', textTransform: 'uppercase', color: 'var(--accent-gold)', fontWeight: 700, fontFamily: 'var(--font-cinzel)' }}>
-                    12:30h
+                    18:00h
                   </span>
                   <span style={{ background: 'rgba(197, 155, 78, 0.15)', color: 'var(--primary-dark)', padding: '2px 10px', borderRadius: '12px', fontSize: '0.78rem', fontWeight: 600 }}>
-                    Jardins
+                    Jardins de la Finca
                   </span>
                 </div>
                 <h3 style={{ fontSize: '1.75rem', margin: '0 0 8px 0', color: 'var(--primary-color)', fontFamily: 'var(--font-serif)' }}>
                   💍 La Cerimònia Civil
                 </h3>
                 <p style={{ color: 'var(--text-muted)', fontSize: '1.02rem', margin: 0, lineHeight: 1.7 }}>
-                  El moment més esperat. Donarem el "Sí, vull" sota els arbres centenaris i el cant dels ocells als jardins principals.
+                  El moment més màgic. Donarem el "Sí, vull" amb la llum daurada del capvespre sota els arbres centenaris de Villa Retiro.
                 </p>
               </div>
 
@@ -501,17 +501,17 @@ export default function Home() {
                 <div className="timeline-node" />
                 <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '6px' }}>
                   <span style={{ fontSize: '0.88rem', letterSpacing: '2px', textTransform: 'uppercase', color: 'var(--accent-gold)', fontWeight: 700, fontFamily: 'var(--font-cinzel)' }}>
-                    13:45h
+                    19:15h
                   </span>
                   <span style={{ background: 'rgba(197, 155, 78, 0.15)', color: 'var(--primary-dark)', padding: '2px 10px', borderRadius: '12px', fontSize: '0.78rem', fontWeight: 600 }}>
-                    Terrassa & Pèrgola
+                    Terrassa & Jardins
                   </span>
                 </div>
                 <h3 style={{ fontSize: '1.75rem', margin: '0 0 8px 0', color: 'var(--primary-color)', fontFamily: 'var(--font-serif)' }}>
-                  🥂 Còctel & Aperitius d'Autor
+                  🥂 Còctel al Capvespre & Aperitius
                 </h3>
                 <p style={{ color: 'var(--text-muted)', fontSize: '1.02rem', margin: 0, lineHeight: 1.7 }}>
-                  Música en viu, bombolles de benvinguda i una selecció exquisida de pica-pica mediterrani a l'aire lliure per començar a brindar.
+                  Música en viu, copes de benvinguda i una selecció gastronòmica exquisida per començar a brindar mentre cau el sol.
                 </p>
               </div>
 
@@ -520,17 +520,17 @@ export default function Home() {
                 <div className="timeline-node" />
                 <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '6px' }}>
                   <span style={{ fontSize: '0.88rem', letterSpacing: '2px', textTransform: 'uppercase', color: 'var(--accent-gold)', fontWeight: 700, fontFamily: 'var(--font-cinzel)' }}>
-                    15:30h
+                    21:00h
                   </span>
                   <span style={{ background: 'rgba(197, 155, 78, 0.15)', color: 'var(--primary-dark)', padding: '2px 10px', borderRadius: '12px', fontSize: '0.78rem', fontWeight: 600 }}>
-                    Saló Noble
+                    Saló Noble & Espelmes
                   </span>
                 </div>
                 <h3 style={{ fontSize: '1.75rem', margin: '0 0 8px 0', color: 'var(--primary-color)', fontFamily: 'var(--font-serif)' }}>
-                  🍽️ El Banquet Nupcial
+                  🍽️ Sopar de Gala Nupcial
                 </h3>
                 <p style={{ color: 'var(--text-muted)', fontSize: '1.02rem', margin: 0, lineHeight: 1.7 }}>
-                  Una experiència gastronòmica de primer nivell creada especialment per a l'ocasió, acompanyada dels millors vins i moments inoblidables.
+                  Una vetllada gastronòmica inoblidable d'alta cuina, acompanyada d'una cuidada selecció de vins i discursos emotius.
                 </p>
               </div>
 
@@ -539,17 +539,17 @@ export default function Home() {
                 <div className="timeline-node" />
                 <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '6px' }}>
                   <span style={{ fontSize: '0.88rem', letterSpacing: '2px', textTransform: 'uppercase', color: 'var(--accent-gold)', fontWeight: 700, fontFamily: 'var(--font-cinzel)' }}>
-                    18:00h
+                    23:30h
                   </span>
                   <span style={{ background: 'rgba(197, 155, 78, 0.15)', color: 'var(--primary-dark)', padding: '2px 10px', borderRadius: '12px', fontSize: '0.78rem', fontWeight: 600 }}>
-                    Espai Festa
+                    Pista de Ball Nocturna
                   </span>
                 </div>
                 <h3 style={{ fontSize: '1.75rem', margin: '0 0 8px 0', color: 'var(--primary-color)', fontFamily: 'var(--font-serif)' }}>
-                  💃 El Ball & La Festa!
+                  💃 Ball Nupcial, Festa & Barra Lliure!
                 </h3>
                 <p style={{ color: 'var(--text-muted)', fontSize: '1.02rem', margin: 0, lineHeight: 1.7 }}>
-                  Obrim la pista amb el primer ball dels nuvis! Barra lliure de còctels, DJ, fotomató, rialles i diversió sense fre fins ben entrada la nit.
+                  Primer ball dels nuvis sota les llums de festa! DJ en directe, barra lliure de copes i còctels, photocall i ball fins a la matinada.
                 </p>
               </div>
 
@@ -576,10 +576,10 @@ export default function Home() {
               <div style={{ fontSize: '2.2rem', marginBottom: '14px' }}>👔</div>
               <h3 style={{ fontSize: '1.4rem', color: 'var(--primary-color)', marginBottom: '10px' }}>Codi de Vestimenta</h3>
               <p style={{ fontSize: '0.95rem', fontWeight: 600, color: 'var(--accent-gold)', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '8px' }}>
-                Elegància Formal / Cocktail
+                Elegància de Tarda-Nit / Cocktail
               </p>
               <p style={{ fontSize: '0.92rem', color: 'var(--text-muted)', margin: 0, lineHeight: 1.6 }}>
-                Volem que us sentiu radiants i elegants. Recomanem tons primaverals o pastissos. <em>(Si us plau, reserveu el color blanc per a la núvia)</em>.
+                En ser un casament de tarda-nit, recomanem vestits elegants llargs o midi, i tratges foscos o de gala. <em>(Si us plau, reserveu el color blanc per a la núvia)</em>.
               </p>
             </div>
 
