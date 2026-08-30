@@ -485,13 +485,24 @@ export default function Home() {
                   </div>
                 </div>
 
-                {/* CTAs */}
-                <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
+                {/* CTAs Horizontally Aligned */}
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '14px', alignItems: 'center' }}>
                   <a 
                     href="https://www.google.com/maps?rlz=1C1VDKB_esES975ES975&gs_lcrp=EgZjaHJvbWUqCggAEAAY4wIYgAQyCggAEAAY4wIYgAQyEwgBEC4YrwEYxwEYgAQYmAUYmQUyCAgCEAAYFhge0gEIMjEyNGowajeoAgCwAgA&um=1&ie=UTF-8&fb=1&gl=es&sa=X&geocode=KSunN9D45qASMWvNPrQk312g&daddr=Carrer+Cami+dels+Molins,+2,+43592+Xerta,+Tarragona" 
                     target="_blank" 
                     rel="noopener noreferrer" 
                     className="btn-secondary"
+                    style={{ 
+                      display: 'inline-flex', 
+                      alignItems: 'center', 
+                      justifyContent: 'center', 
+                      gap: '8px', 
+                      padding: '12px 18px', 
+                      fontSize: '0.92rem',
+                      textAlign: 'center',
+                      width: '100%',
+                      whiteSpace: 'nowrap'
+                    }}
                   >
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                       <path d="M12 2a8 8 0 0 0-8 8c0 5.25 8 12 8 12s8-6.75 8-12a8 8 0 0 0-8-8z"/>
@@ -505,6 +516,17 @@ export default function Home() {
                     target="_blank" 
                     rel="noopener noreferrer" 
                     className="btn-secondary"
+                    style={{ 
+                      display: 'inline-flex', 
+                      alignItems: 'center', 
+                      justifyContent: 'center', 
+                      gap: '8px', 
+                      padding: '12px 18px', 
+                      fontSize: '0.92rem',
+                      textAlign: 'center',
+                      width: '100%',
+                      whiteSpace: 'nowrap'
+                    }}
                   >
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                       <circle cx="12" cy="12" r="10"/>
