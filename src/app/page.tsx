@@ -682,29 +682,21 @@ export default function Home() {
               </p>
             </div>
 
-            {/* Card 2: Regals & Viatge */}
+            {/* Card 2: Allotjament & Transport */}
             <div className="glass-card-sm text-center">
               <div style={{ width: '45px', height: '45px', borderRadius: '50%', background: 'rgba(197, 155, 78, 0.12)', color: 'var(--primary-color)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 15px auto' }}>
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <polyline points="20 12 20 22 4 22 4 12"></polyline>
-                  <rect x="2" y="7" width="20" height="5"></rect>
-                  <line x1="12" y1="22" x2="12" y2="7"></line>
-                  <path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"></path>
-                  <path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"></path>
+                  <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                  <polyline points="9 22 9 12 15 12 15 22"></polyline>
                 </svg>
               </div>
-              <h3 style={{ fontSize: '1.4rem', color: 'var(--primary-color)', marginBottom: '10px' }}>Llista de Casament</h3>
-              <p style={{ fontSize: '0.92rem', color: 'var(--text-muted)', marginBottom: '14px', lineHeight: 1.6 }}>
-                El millor regal és compartir aquest dia amb vosaltres. Si voleu col·laborar amb el nostre viatge de noces, us deixem el nostre número de compte:
+              <h3 style={{ fontSize: '1.4rem', color: 'var(--primary-color)', marginBottom: '10px' }}>Allotjament & Transport</h3>
+              <p style={{ fontSize: '0.95rem', fontWeight: 600, color: 'var(--accent-gold)', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '8px' }}>
+                Gaudir amb Tranquil·litat
               </p>
-              <button 
-                onClick={() => handleCopyIban('ES76 0049 1500 0512 3456 7890')}
-                className="copy-pill-btn"
-                title="Fes clic per copiar l'IBAN"
-              >
-                <span>ES76 ···· 7890</span>
-                <span>{copiedIban ? '✓ Copiat!' : 'Copiar'}</span>
-              </button>
+              <p style={{ fontSize: '0.92rem', color: 'var(--text-muted)', margin: 0, lineHeight: 1.6 }}>
+                Perquè pugueu gaudir de la festa i de la barra lliure sense preocupar-vos del cotxe, hi ha opcions d'estada al mateix Hotel Villa Retiro i allotjaments a Xerta i Tortosa, a més de servei de taxis locals.
+              </p>
             </div>
 
             {/* Card 3: Xarxes i Fotos */}
