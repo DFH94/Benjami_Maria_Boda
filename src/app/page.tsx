@@ -119,10 +119,9 @@ export default function Home() {
     e.preventDefault();
     setStatus('loading');
 
-    const compiledDietary = [
-      ...selectedDietary,
-      dietaryOther.trim() ? `Altres: ${dietaryOther.trim()}` : ''
-    ].filter(Boolean).join(', ') || (formData.attending === 'yes' ? 'Cap (Menú Estàndard)' : '');
+    const compiledDietary = formData.attending === 'yes'
+      ? (dietaryOther.trim() || 'Cap')
+      : '';
 
     try {
       const res = await fetch('/api/rsvp', {
@@ -926,43 +925,28 @@ export default function Home() {
                       </label>
                     </div>
 
-                    <label className="form-label" style={{ marginTop: '10px' }}>
-                      Preferències de menú, al·lèrgies o intoleràncies
+                    <label className="form-label" style={{ marginTop: '16px' }}>
+                      Al·lèrgies, intoleràncies o observacions dietètiques (opcional)
                     </label>
-                    <p style={{ fontSize: '0.82rem', color: 'var(--text-muted)', marginBottom: '12px' }}>
-                      Selecciona les opcions que s'apliquin a tu o als teus acompanyants:
+                    <p style={{ fontSize: '0.82rem', color: 'var(--text-muted)', marginBottom: '10px' }}>
+                      Indica si tu o algun dels teus acompanyants té alguna al·lèrgia, celiaquia, intolerància o requereix menú especial:
                     </p>
-
-                    {/* Checkbox Vertical List Mode */}
-                    <div className="dietary-list">
-                      {DIETARY_OPTIONS.map((opt) => {
-                        const isChecked = selectedDietary.includes(opt.label);
-                        return (
-                          <label 
-                            key={opt.id}
-                            className={`dietary-checkbox-item ${isChecked ? 'selected' : ''}`}
-                          >
-                            <input 
-                              type="checkbox"
-                              checked={isChecked}
-                              onChange={() => handleToggleDietary(opt.label, opt.id)}
-                              className="dietary-checkbox-native"
-                            />
-                            <span>{opt.label}</span>
-                          </label>
-                        );
-                      })}
-                    </div>
-
-                    <label className="form-label" style={{ fontSize: '0.86rem', marginTop: '14px' }}>
-                      Altres especificacions o observacions (opcional)
-                    </label>
-                    <input 
-                      type="text"
+                    <textarea 
                       className="input-field"
-                      placeholder="Ex. Embarassada, al·lèrgia al kiwi, etc."
+                      placeholder="Ex. Celíac (sense gluten), intolerant a la lactosa, vegetarià, al·lèrgia a la fruita seca..."
                       value={dietaryOther}
                       onChange={(e) => setDietaryOther(e.target.value)}
+                      rows={3}
+                      style={{ 
+                        width: '100%', 
+                        padding: '12px 14px', 
+                        borderRadius: '10px', 
+                        border: '1px solid rgba(197, 155, 78, 0.35)', 
+                        fontFamily: 'var(--font-body)', 
+                        fontSize: '0.92rem',
+                        resize: 'vertical',
+                        background: '#ffffff'
+                      }}
                     />
                   </>
                 )}
