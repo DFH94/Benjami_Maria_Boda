@@ -13,7 +13,7 @@ export async function GET(request: Request) {
   }
 
   try {
-    const guests = readGuests();
+    const guests = await readGuests();
     return NextResponse.json({ guests });
   } catch (error) {
     console.error('Error reading guests:', error);

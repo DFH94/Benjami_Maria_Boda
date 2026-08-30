@@ -11,7 +11,7 @@ export async function GET(request: Request) {
   }
 
   try {
-    const seating = readSeating();
+    const seating = await readSeating();
     return NextResponse.json({ seating });
   } catch (error) {
     console.error('Error reading seating:', error);
@@ -27,7 +27,7 @@ export async function POST(request: Request) {
 
   try {
     const body = await request.json();
-    saveSeating(body.seating || {});
+    await saveSeating(body.seating || {});
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error('Error saving seating:', error);

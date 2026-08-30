@@ -24,9 +24,9 @@ export async function POST(request: Request) {
       createdAt: new Date().toISOString()
     };
 
-    const guests = readGuests();
+    const guests = await readGuests();
     guests.push(newGuest);
-    saveGuests(guests);
+    await saveGuests(guests);
 
     return NextResponse.json({ success: true, guest: newGuest });
   } catch (error) {

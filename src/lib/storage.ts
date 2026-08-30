@@ -1,10 +1,30 @@
 import fs from 'fs';
 import path from 'path';
 import os from 'os';
+import { Redis } from '@upstash/redis';
 
 // In-memory fallback
 let memoryGuests: any[] = [];
 let memorySeating: Record<string, any> = {};
+
+let redisClient: Redis | null = null;
+
+function getRedis(): Redis | null {
+  if (redisClient) return redisClient;
+
+  const url = process.env.KV_REST_API_URL || process.env.UPSTASH_REDIS_REST_URL;
+  const token = process.env.KV_REST_API_TOKEN || process.env.UPSTASH_REDIS_REST_TOKEN;
+
+  if (url && token) {
+    try {
+      redisClient = new Redis({ url, token });
+      return redisClient;
+    } catch (e) {
+      console.error('Error connecting to Upstash Redis/KV:', e);
+    }
+  }
+  return null;
+}
 
 function getLocalDataPath(filename: string): string {
   return path.join(process.cwd(), 'data', filename);
@@ -14,8 +34,23 @@ function getTmpPath(filename: string): string {
   return path.join(os.tmpdir(), filename);
 }
 
-export function readGuests(): any[] {
-  // 1. Try local ./data/guests.json
+export async function readGuests(): Promise<any[]> {
+  // 1. Try Upstash Redis / Vercel KV if configured
+  const redis = getRedis();
+  if (redis) {
+    try {
+      const data = await redis.get<any[]>('wedding_guests');
+      if (Array.isArray(data)) {
+        memoryGuests = data;
+        return data;
+      }
+      return [];
+    } catch (err) {
+      console.error('Redis readGuests error:', err);
+    }
+  }
+
+  // 2. Try local ./data/guests.json
   try {
     const localPath = getLocalDataPath('guests.json');
     if (fs.existsSync(localPath)) {
@@ -27,10 +62,10 @@ export function readGuests(): any[] {
       }
     }
   } catch {
-    // Continue to next fallback
+    // Continue
   }
 
-  // 2. Try os.tmpdir()/guests.json
+  // 3. Try os.tmpdir()/guests.json
   try {
     const tmpPath = getTmpPath('guests.json');
     if (fs.existsSync(tmpPath)) {
@@ -42,17 +77,26 @@ export function readGuests(): any[] {
       }
     }
   } catch {
-    // Continue to memory fallback
+    // Continue
   }
 
   return memoryGuests;
 }
 
-export function saveGuests(guests: any[]): boolean {
+export async function saveGuests(guests: any[]): Promise<boolean> {
   memoryGuests = guests;
-  let savedSomewhere = false;
 
-  // 1. Try saving to ./data/guests.json
+  // 1. Try saving to Upstash Redis / Vercel KV
+  const redis = getRedis();
+  if (redis) {
+    try {
+      await redis.set('wedding_guests', guests);
+    } catch (err) {
+      console.error('Redis saveGuests error:', err);
+    }
+  }
+
+  // 2. Try saving to ./data/guests.json
   try {
     const localPath = getLocalDataPath('guests.json');
     const dir = path.dirname(localPath);
@@ -60,12 +104,11 @@ export function saveGuests(guests: any[]): boolean {
       fs.mkdirSync(dir, { recursive: true });
     }
     fs.writeFileSync(localPath, JSON.stringify(guests, null, 2), 'utf8');
-    savedSomewhere = true;
-  } catch (err) {
+  } catch {
     // Expected on read-only environments like Vercel Lambda
   }
 
-  // 2. Try saving to os.tmpdir()/guests.json
+  // 3. Try saving to os.tmpdir()/guests.json
   try {
     const tmpPath = getTmpPath('guests.json');
     const dir = path.dirname(tmpPath);
@@ -73,16 +116,30 @@ export function saveGuests(guests: any[]): boolean {
       fs.mkdirSync(dir, { recursive: true });
     }
     fs.writeFileSync(tmpPath, JSON.stringify(guests, null, 2), 'utf8');
-    savedSomewhere = true;
-  } catch (err) {
-    // Log if tmp also fails
+  } catch {
+    // Ignore
   }
 
   return true;
 }
 
-export function readSeating(): Record<string, any> {
-  // 1. Try local ./data/seating.json
+export async function readSeating(): Promise<Record<string, any>> {
+  // 1. Try Upstash Redis / Vercel KV
+  const redis = getRedis();
+  if (redis) {
+    try {
+      const data = await redis.get<Record<string, any>>('wedding_seating');
+      if (data && typeof data === 'object') {
+        memorySeating = data;
+        return data;
+      }
+      return {};
+    } catch (err) {
+      console.error('Redis readSeating error:', err);
+    }
+  }
+
+  // 2. Try local ./data/seating.json
   try {
     const localPath = getLocalDataPath('seating.json');
     if (fs.existsSync(localPath)) {
@@ -94,10 +151,10 @@ export function readSeating(): Record<string, any> {
       }
     }
   } catch {
-    // Continue to next fallback
+    // Continue
   }
 
-  // 2. Try os.tmpdir()/seating.json
+  // 3. Try os.tmpdir()/seating.json
   try {
     const tmpPath = getTmpPath('seating.json');
     if (fs.existsSync(tmpPath)) {
@@ -109,16 +166,26 @@ export function readSeating(): Record<string, any> {
       }
     }
   } catch {
-    // Continue to memory fallback
+    // Continue
   }
 
   return memorySeating;
 }
 
-export function saveSeating(seating: Record<string, any>): boolean {
+export async function saveSeating(seating: Record<string, any>): Promise<boolean> {
   memorySeating = seating;
 
-  // 1. Try saving to ./data/seating.json
+  // 1. Try saving to Upstash Redis / Vercel KV
+  const redis = getRedis();
+  if (redis) {
+    try {
+      await redis.set('wedding_seating', seating);
+    } catch (err) {
+      console.error('Redis saveSeating error:', err);
+    }
+  }
+
+  // 2. Try saving to ./data/seating.json
   try {
     const localPath = getLocalDataPath('seating.json');
     const dir = path.dirname(localPath);
@@ -130,7 +197,7 @@ export function saveSeating(seating: Record<string, any>): boolean {
     // Expected on read-only environments
   }
 
-  // 2. Try saving to os.tmpdir()/seating.json
+  // 3. Try saving to os.tmpdir()/seating.json
   try {
     const tmpPath = getTmpPath('seating.json');
     const dir = path.dirname(tmpPath);
