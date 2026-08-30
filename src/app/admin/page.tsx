@@ -547,7 +547,7 @@ export default function AdminPage() {
                       {/* 2. Type */}
                       <div>
                         <span style={{ 
-                          background: 'rgba(140, 115, 85, 0.12)', 
+                          background: 'rgba(197, 155, 78, 0.12)', 
                           color: 'var(--primary-dark)', 
                           fontSize: '0.72rem', 
                           padding: '3px 9px', 
@@ -557,7 +557,7 @@ export default function AdminPage() {
                           textTransform: 'uppercase',
                           display: 'inline-block'
                         }}>
-                          Titular
+                          Adult
                         </span>
                       </div>
 
