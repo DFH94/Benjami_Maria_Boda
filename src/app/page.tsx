@@ -15,14 +15,14 @@ export default function Home() {
   const [copiedIban, setCopiedIban] = useState(false);
 
   const DIETARY_OPTIONS = [
-    { id: 'celiac', label: 'Sense Gluten / Celíac', icon: '🌾' },
-    { id: 'lactose', label: 'Intolerància a la Lactosa', icon: '🥛' },
-    { id: 'vegetarian', label: 'Menú Vegetarià', icon: '🥦' },
-    { id: 'vegan', label: 'Menú Vegà', icon: '🌱' },
-    { id: 'nuts', label: 'Al·lèrgia a la Fruita Seca', icon: '🥜' },
-    { id: 'seafood', label: 'Al·lèrgia al Marisc / Peix', icon: '🦐' },
-    { id: 'kids', label: 'Menú Infantil', icon: '👶' },
-    { id: 'none', label: 'Cap (Menú Estàndard)', icon: '✨' },
+    { id: 'celiac', label: 'Sense Gluten / Celíac' },
+    { id: 'lactose', label: 'Intolerància a la Lactosa' },
+    { id: 'vegetarian', label: 'Menú Vegetarià' },
+    { id: 'vegan', label: 'Menú Vegà' },
+    { id: 'nuts', label: 'Al·lèrgia a la Fruita Seca' },
+    { id: 'seafood', label: 'Al·lèrgia al Marisc / Peix' },
+    { id: 'kids', label: 'Menú Infantil' },
+    { id: 'none', label: 'Cap (Menú Estàndard)' },
   ];
 
   const handleToggleDietary = (label: string, id: string) => {
@@ -349,13 +349,13 @@ export default function Home() {
                 {/* Milestone Chips */}
                 <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
                   <span style={{ background: 'rgba(197, 155, 78, 0.12)', border: '1px solid rgba(197, 155, 78, 0.3)', color: 'var(--primary-dark)', padding: '6px 14px', borderRadius: '20px', fontSize: '0.82rem', fontWeight: 600 }}>
-                    ✨ La primera mirada
+                    La primera mirada
                   </span>
                   <span style={{ background: 'rgba(197, 155, 78, 0.12)', border: '1px solid rgba(197, 155, 78, 0.3)', color: 'var(--primary-dark)', padding: '6px 14px', borderRadius: '20px', fontSize: '0.82rem', fontWeight: 600 }}>
-                    💍 La promesa a París
+                    La promesa a París
                   </span>
                   <span style={{ background: 'rgba(197, 155, 78, 0.12)', border: '1px solid rgba(197, 155, 78, 0.3)', color: 'var(--primary-dark)', padding: '6px 14px', borderRadius: '20px', fontSize: '0.82rem', fontWeight: 600 }}>
-                    🥂 El Gran Dia
+                    El Gran Dia
                   </span>
                 </div>
               </div>
@@ -414,7 +414,7 @@ export default function Home() {
               {/* Right: Venue description & info */}
               <div>
                 <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', background: 'rgba(197, 155, 78, 0.15)', color: 'var(--accent-gold-dark)', padding: '5px 14px', borderRadius: '20px', fontSize: '0.82rem', fontWeight: 700, letterSpacing: '1px', textTransform: 'uppercase', marginBottom: '12px' }}>
-                  ★ ★ ★ ★ ★ Relais & Châteaux
+                  Relais & Châteaux · 5 Estrelles
                 </div>
 
                 <h3 style={{ 
@@ -428,20 +428,20 @@ export default function Home() {
                 </h3>
 
                 <p style={{ fontSize: '1.05rem', color: 'var(--text-color)', marginBottom: '8px', fontWeight: 500 }}>
-                  📍 Carrer Camí dels Molins, 2 · 43592 Xerta, Tarragona
+                  Carrer Camí dels Molins, 2 · 43592 Xerta, Tarragona
                 </p>
 
                 <p style={{ fontSize: '1.05rem', color: 'var(--text-muted)', marginBottom: '22px' }}>
-                  🕒 La cerimònia començarà a les <strong>18:00h</strong> als jardins botànics de la finca amb la màgia del capvespre. Us preguem arribar amb 15 minuts d'antelació per acomodar-vos amb tranquil·litat.
+                  La cerimònia començarà a les <strong>18:00h</strong> als jardins botànics de la finca amb la màgia del capvespre. Us preguem arribar amb 15 minuts d'antelació per acomodar-vos amb tranquil·litat.
                 </p>
 
                 {/* Practical Guest Badges */}
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px', marginBottom: '25px' }}>
                   <div style={{ background: '#ffffff', padding: '10px 14px', borderRadius: '12px', border: '1px solid rgba(197, 155, 78, 0.25)', fontSize: '0.85rem' }}>
-                    🚗 <strong>Pàrquing:</strong> Privat i gratuït dins del recinte.
+                    <strong>Pàrquing:</strong> Privat i gratuït dins del recinte.
                   </div>
                   <div style={{ background: '#ffffff', padding: '10px 14px', borderRadius: '12px', border: '1px solid rgba(197, 155, 78, 0.25)', fontSize: '0.85rem' }}>
-                    🏨 <strong>Allotjament:</strong> Disponibilitat a l'hotel i a Xerta.
+                    <strong>Allotjament:</strong> Disponibilitat a l'hotel i a Xerta.
                   </div>
                 </div>
 
@@ -524,7 +524,7 @@ export default function Home() {
                   </span>
                 </div>
                 <h3 style={{ fontSize: '1.75rem', margin: '0 0 8px 0', color: 'var(--primary-color)', fontFamily: 'var(--font-serif)' }}>
-                  💍 La Cerimònia Civil
+                  La Cerimònia Civil
                 </h3>
                 <p style={{ color: 'var(--text-muted)', fontSize: '1.02rem', margin: 0, lineHeight: 1.7 }}>
                   El moment més màgic. Donarem el "Sí, vull" amb la llum daurada del capvespre sota els arbres centenaris de Villa Retiro.
@@ -543,7 +543,7 @@ export default function Home() {
                   </span>
                 </div>
                 <h3 style={{ fontSize: '1.75rem', margin: '0 0 8px 0', color: 'var(--primary-color)', fontFamily: 'var(--font-serif)' }}>
-                  🥂 Còctel al Capvespre & Aperitius
+                  Còctel al Capvespre & Aperitius
                 </h3>
                 <p style={{ color: 'var(--text-muted)', fontSize: '1.02rem', margin: 0, lineHeight: 1.7 }}>
                   Música en viu, copes de benvinguda i una selecció gastronòmica exquisida per començar a brindar mentre cau el sol.
@@ -562,7 +562,7 @@ export default function Home() {
                   </span>
                 </div>
                 <h3 style={{ fontSize: '1.75rem', margin: '0 0 8px 0', color: 'var(--primary-color)', fontFamily: 'var(--font-serif)' }}>
-                  🍽️ Sopar de Gala Nupcial
+                  Sopar de Gala Nupcial
                 </h3>
                 <p style={{ color: 'var(--text-muted)', fontSize: '1.02rem', margin: 0, lineHeight: 1.7 }}>
                   Una vetllada gastronòmica inoblidable d'alta cuina, acompanyada d'una cuidada selecció de vins i discursos emotius.
@@ -581,7 +581,7 @@ export default function Home() {
                   </span>
                 </div>
                 <h3 style={{ fontSize: '1.75rem', margin: '0 0 8px 0', color: 'var(--primary-color)', fontFamily: 'var(--font-serif)' }}>
-                  💃 Ball Nupcial, Festa & Barra Lliure!
+                  Ball Nupcial, Festa & Barra Lliure
                 </h3>
                 <p style={{ color: 'var(--text-muted)', fontSize: '1.02rem', margin: 0, lineHeight: 1.7 }}>
                   Primer ball dels nuvis sota les llums de festa! DJ en directe, barra lliure de copes i còctels, photocall i ball fins a la matinada.
@@ -608,7 +608,11 @@ export default function Home() {
             
             {/* Card 1: Dress Code */}
             <div className="glass-card-sm text-center">
-              <div style={{ fontSize: '2.2rem', marginBottom: '14px' }}>👔</div>
+              <div style={{ width: '45px', height: '45px', borderRadius: '50%', background: 'rgba(197, 155, 78, 0.12)', color: 'var(--primary-color)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 15px auto' }}>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M20.38 3.46L16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.47a1 1 0 0 0 .99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.47a2 2 0 0 0-1.34-2.23z"/>
+                </svg>
+              </div>
               <h3 style={{ fontSize: '1.4rem', color: 'var(--primary-color)', marginBottom: '10px' }}>Codi de Vestimenta</h3>
               <p style={{ fontSize: '0.95rem', fontWeight: 600, color: 'var(--accent-gold)', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '8px' }}>
                 Elegància de Tarda-Nit / Cocktail
@@ -620,7 +624,15 @@ export default function Home() {
 
             {/* Card 2: Regals & Viatge */}
             <div className="glass-card-sm text-center">
-              <div style={{ fontSize: '2.2rem', marginBottom: '14px' }}>🎁</div>
+              <div style={{ width: '45px', height: '45px', borderRadius: '50%', background: 'rgba(197, 155, 78, 0.12)', color: 'var(--primary-color)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 15px auto' }}>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <polyline points="20 12 20 22 4 22 4 12"></polyline>
+                  <rect x="2" y="7" width="20" height="5"></rect>
+                  <line x1="12" y1="22" x2="12" y2="7"></line>
+                  <path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"></path>
+                  <path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"></path>
+                </svg>
+              </div>
               <h3 style={{ fontSize: '1.4rem', color: 'var(--primary-color)', marginBottom: '10px' }}>Llista de Casament</h3>
               <p style={{ fontSize: '0.92rem', color: 'var(--text-muted)', marginBottom: '14px', lineHeight: 1.6 }}>
                 El millor regal és compartir aquest dia amb vosaltres. Si voleu col·laborar amb el nostre viatge de noces, us deixem el nostre número de compte:
@@ -631,13 +643,18 @@ export default function Home() {
                 title="Fes clic per copiar l'IBAN"
               >
                 <span>ES76 ···· 7890</span>
-                <span>{copiedIban ? '✓ Copiat!' : '📋 Copiar'}</span>
+                <span>{copiedIban ? '✓ Copiat!' : 'Copiar'}</span>
               </button>
             </div>
 
             {/* Card 3: Xarxes i Fotos */}
             <div className="glass-card-sm text-center">
-              <div style={{ fontSize: '2.2rem', marginBottom: '14px' }}>📸</div>
+              <div style={{ width: '45px', height: '45px', borderRadius: '50%', background: 'rgba(197, 155, 78, 0.12)', color: 'var(--primary-color)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 15px auto' }}>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
+                  <circle cx="12" cy="13" r="4"></circle>
+                </svg>
+              </div>
               <h3 style={{ fontSize: '1.4rem', color: 'var(--primary-color)', marginBottom: '10px' }}>Fotos & Moments</h3>
               <p style={{ fontSize: '0.95rem', fontWeight: 600, color: 'var(--accent-gold)', letterSpacing: '1px', marginBottom: '8px' }}>
                 #BenjaiMaria2027
@@ -710,8 +727,8 @@ export default function Home() {
                   onChange={(e) => setFormData({...formData, attending: e.target.value})}
                   style={{ cursor: 'pointer' }}
                 >
-                  <option value="yes">✨ Sí, allà hi seré amb molta il·lusió!</option>
-                  <option value="no">💔 No, malauradament no podré assistir</option>
+                  <option value="yes">Sí, confirmaré l'assistència</option>
+                  <option value="no">No podré assistir</option>
                 </select>
 
                 {formData.attending === 'yes' && (
@@ -729,18 +746,18 @@ export default function Home() {
                     <label className="form-label" style={{ marginTop: '10px' }}>
                       Preferències de menú, al·lèrgies o intoleràncies
                     </label>
-                    <p style={{ fontSize: '0.82rem', color: 'var(--text-muted)', marginBottom: '10px' }}>
-                      Selecciona totes les opcions que s'apliquin a tu o als teus acompanyants:
+                    <p style={{ fontSize: '0.82rem', color: 'var(--text-muted)', marginBottom: '12px' }}>
+                      Selecciona les opcions que s'apliquin a tu o als teus acompanyants:
                     </p>
 
-                    {/* Checkbox Tiles Grid */}
-                    <div className="dietary-grid">
+                    {/* Checkbox Vertical List Mode */}
+                    <div className="dietary-list">
                       {DIETARY_OPTIONS.map((opt) => {
                         const isChecked = selectedDietary.includes(opt.label);
                         return (
                           <div 
                             key={opt.id}
-                            className={`dietary-checkbox-card ${isChecked ? 'selected' : ''}`}
+                            className={`dietary-checkbox-item ${isChecked ? 'selected' : ''}`}
                             onClick={() => handleToggleDietary(opt.label, opt.id)}
                           >
                             <div className="dietary-checkbox-custom">
@@ -750,13 +767,13 @@ export default function Home() {
                                 </svg>
                               )}
                             </div>
-                            <span>{opt.icon} {opt.label}</span>
+                            <span>{opt.label}</span>
                           </div>
                         );
                       })}
                     </div>
 
-                    <label className="form-label" style={{ fontSize: '0.86rem', marginTop: '12px' }}>
+                    <label className="form-label" style={{ fontSize: '0.86rem', marginTop: '14px' }}>
                       Altres especificacions o observacions (opcional)
                     </label>
                     <input 

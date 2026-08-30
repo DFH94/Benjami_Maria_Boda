@@ -573,48 +573,46 @@ a {
   letter-spacing: 0.5px;
 }
 
-/* Dietary Checkbox Grid & Card Styling */
-.dietary-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-  gap: 10px;
+/* Dietary Checkbox List Mode Styling */
+.dietary-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
   margin-bottom: 16px;
 }
 
-.dietary-checkbox-card {
+.dietary-checkbox-item {
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 11px 14px;
+  gap: 12px;
+  padding: 11px 16px;
   background: #ffffff;
-  border: 1.5px solid rgba(197, 155, 78, 0.35);
-  border-radius: 12px;
+  border: 1px solid rgba(197, 155, 78, 0.35);
+  border-radius: 10px;
   cursor: pointer;
-  transition: all 0.25s ease;
+  transition: all 0.2s ease;
   user-select: none;
-  font-size: 0.88rem;
+  font-size: 0.92rem;
   font-weight: 500;
   color: var(--text-color);
 }
 
-.dietary-checkbox-card:hover {
+.dietary-checkbox-item:hover {
   border-color: var(--accent-gold);
-  background: #fdfbf7;
-  transform: translateY(-1px);
+  background: #fdfbf8;
 }
 
-.dietary-checkbox-card.selected {
-  background: rgba(197, 155, 78, 0.12);
+.dietary-checkbox-item.selected {
+  background: rgba(197, 155, 78, 0.1);
   border-color: var(--accent-gold);
   color: var(--primary-dark);
   font-weight: 600;
-  box-shadow: 0 3px 10px rgba(197, 155, 78, 0.15);
 }
 
 .dietary-checkbox-custom {
   width: 18px;
   height: 18px;
-  border-radius: 5px;
+  border-radius: 4px;
   border: 1.5px solid rgba(197, 155, 78, 0.6);
   display: flex;
   align-items: center;
@@ -624,7 +622,7 @@ a {
   flex-shrink: 0;
 }
 
-.dietary-checkbox-card.selected .dietary-checkbox-custom {
+.dietary-checkbox-item.selected .dietary-checkbox-custom {
   background: var(--accent-gold);
   border-color: var(--accent-gold);
   color: #ffffff;
