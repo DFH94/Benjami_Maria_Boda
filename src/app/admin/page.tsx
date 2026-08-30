@@ -3,11 +3,18 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 
+interface CompanionDetail {
+  name: string;
+  isChild: boolean;
+  mainCourse?: string;
+}
+
 interface Guest {
   id: string;
   name: string;
   attending: boolean;
   companions: number;
+  companionDetails?: CompanionDetail[];
   mainCourse?: string;
   dietary?: string;
 }
@@ -82,7 +89,7 @@ export default function AdminPage() {
         setError('Contrasenya incorrecta');
       }
     } catch {
-      setError('Error de connexió');
+      setError('Error al connectar amb el servidor');
     } finally {
       setLoading(false);
     }
@@ -126,14 +133,28 @@ export default function AdminPage() {
           dietary: g.dietary
         });
 
-        const compCount = g.companions || 0;
-        for (let i = 1; i <= compCount; i++) {
-          list.push({
-            id: `guest-${g.id || g.name}-comp-${i}`,
-            name: `${g.name} (Acomp. ${i})`,
-            isCompanion: true,
-            dietary: g.dietary
+        if (g.companionDetails && g.companionDetails.length > 0) {
+          g.companionDetails.forEach((comp, idx) => {
+            const compDisplayName = comp.name && comp.name.trim() 
+              ? `${comp.name.trim()}${comp.isChild ? ' (Infant)' : ''}`
+              : `${g.name} (Acomp. ${idx + 1}${comp.isChild ? ' - Infant' : ''})`;
+            list.push({
+              id: `guest-${g.id || g.name}-comp-${idx + 1}`,
+              name: compDisplayName,
+              isCompanion: true,
+              dietary: g.dietary
+            });
           });
+        } else {
+          const compCount = g.companions || 0;
+          for (let i = 1; i <= compCount; i++) {
+            list.push({
+              id: `guest-${g.id || g.name}-comp-${i}`,
+              name: `${g.name} (Acomp. ${i})`,
+              isCompanion: true,
+              dietary: g.dietary
+            });
+          }
         }
       });
 
@@ -317,8 +338,32 @@ export default function AdminPage() {
   const totalAttending = attendingGuests.length + attendingGuests.reduce((acc, curr) => acc + (curr.companions || 0), 0);
   const totalDeclined = guests.filter(g => !g.attending).length;
   const totalOccupiedSeats = Object.keys(seating).length;
-  const totalMeat = attendingGuests.filter(g => (g.mainCourse || 'Carn') === 'Carn').length;
-  const totalFish = attendingGuests.filter(g => g.mainCourse === 'Peix').length;
+
+  let totalChildren = 0;
+  let totalAdults = attendingGuests.length;
+  let totalMeat = 0;
+  let totalFish = 0;
+  let totalKidsMenu = 0;
+
+  attendingGuests.forEach(g => {
+    if ((g.mainCourse || 'Carn') === 'Carn') totalMeat++;
+    else if (g.mainCourse === 'Peix') totalFish++;
+
+    if (g.companionDetails && g.companionDetails.length > 0) {
+      g.companionDetails.forEach(c => {
+        if (c.isChild) {
+          totalChildren++;
+          totalKidsMenu++;
+        } else {
+          totalAdults++;
+          if ((c.mainCourse || 'Carn') === 'Carn') totalMeat++;
+          else if (c.mainCourse === 'Peix') totalFish++;
+        }
+      });
+    } else if (g.companions > 0) {
+      totalAdults += g.companions;
+    }
+  });
 
   return (
     <main className="section" style={{ minHeight: '100vh', backgroundColor: 'var(--bg-color)', padding: '40px 16px' }}>
@@ -395,29 +440,40 @@ export default function AdminPage() {
         {/* TAB 1: LLISTA DE CONVIDATS */}
         {activeTab === 'guests' && (
           <div>
-            <div style={{ display: 'flex', gap: '15px', marginBottom: '25px', flexWrap: 'wrap' }}>
-              <div style={{ background: 'var(--primary-color)', color: '#fff', padding: '12px 24px', borderRadius: '30px', boxShadow: '0 4px 15px rgba(140, 115, 85, 0.2)' }}>
-                <p style={{ fontSize: '1.05rem', fontWeight: 600, margin: 0 }}>Total Confirmats: {totalAttending}</p>
+            <div style={{ display: 'flex', gap: '12px', marginBottom: '25px', flexWrap: 'wrap' }}>
+              <div style={{ background: 'var(--primary-color)', color: '#fff', padding: '10px 20px', borderRadius: '30px', boxShadow: '0 4px 15px rgba(140, 115, 85, 0.2)' }}>
+                <p style={{ fontSize: '0.95rem', fontWeight: 600, margin: 0 }}>Total Confirmats: {totalAttending}</p>
               </div>
-              <div style={{ background: '#fff', border: '1px solid rgba(197, 155, 78, 0.5)', color: 'var(--primary-dark)', padding: '12px 20px', borderRadius: '30px', fontWeight: 600 }}>
-                <p style={{ fontSize: '0.95rem', margin: 0 }}>Plat Carn: {totalMeat}</p>
+              <div style={{ background: '#fff', border: '1px solid rgba(197, 155, 78, 0.5)', color: 'var(--primary-dark)', padding: '10px 18px', borderRadius: '30px', fontWeight: 600 }}>
+                <p style={{ fontSize: '0.9rem', margin: 0 }}>Adults: {totalAdults}</p>
               </div>
-              <div style={{ background: '#fff', border: '1px solid rgba(197, 155, 78, 0.5)', color: 'var(--primary-dark)', padding: '12px 20px', borderRadius: '30px', fontWeight: 600 }}>
-                <p style={{ fontSize: '0.95rem', margin: 0 }}>Plat Peix: {totalFish}</p>
+              <div style={{ background: '#fff', border: '1px solid rgba(255, 152, 0, 0.6)', color: '#e65100', padding: '10px 18px', borderRadius: '30px', fontWeight: 600 }}>
+                <p style={{ fontSize: '0.9rem', margin: 0 }}>Infants: {totalChildren}</p>
               </div>
-              <div style={{ background: '#fff', border: '1px solid rgba(217, 197, 178, 0.6)', color: 'var(--text-muted)', padding: '12px 20px', borderRadius: '30px' }}>
-                <p style={{ fontSize: '0.95rem', margin: 0 }}>No assisteixen: {totalDeclined}</p>
+              <div style={{ background: '#fff', border: '1px solid rgba(197, 155, 78, 0.5)', color: 'var(--primary-dark)', padding: '10px 18px', borderRadius: '30px', fontWeight: 600 }}>
+                <p style={{ fontSize: '0.9rem', margin: 0 }}>Plats Carn: {totalMeat}</p>
+              </div>
+              <div style={{ background: '#fff', border: '1px solid rgba(197, 155, 78, 0.5)', color: 'var(--primary-dark)', padding: '10px 18px', borderRadius: '30px', fontWeight: 600 }}>
+                <p style={{ fontSize: '0.9rem', margin: 0 }}>Plats Peix: {totalFish}</p>
+              </div>
+              {totalKidsMenu > 0 && (
+                <div style={{ background: '#fff', border: '1px solid rgba(255, 152, 0, 0.6)', color: '#e65100', padding: '10px 18px', borderRadius: '30px', fontWeight: 600 }}>
+                  <p style={{ fontSize: '0.9rem', margin: 0 }}>Menús Infantils: {totalKidsMenu}</p>
+                </div>
+              )}
+              <div style={{ background: '#fff', border: '1px solid rgba(217, 197, 178, 0.6)', color: 'var(--text-muted)', padding: '10px 18px', borderRadius: '30px' }}>
+                <p style={{ fontSize: '0.9rem', margin: 0 }}>No assisteixen: {totalDeclined}</p>
               </div>
             </div>
 
             <div className="glass-card" style={{ padding: '25px', overflowX: 'auto' }}>
-              <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', minWidth: '700px' }}>
+              <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', minWidth: '760px' }}>
                 <thead>
                   <tr style={{ borderBottom: '2px solid rgba(140, 115, 85, 0.3)', color: 'var(--primary-color)', fontFamily: 'var(--font-title)', fontSize: '1.15rem' }}>
                     <th style={{ padding: '16px 12px' }}>Nom i Cognoms</th>
                     <th style={{ padding: '16px 12px' }}>Assistència</th>
-                    <th style={{ padding: '16px 12px' }}>Acompanyants</th>
-                    <th style={{ padding: '16px 12px' }}>Plat Principal</th>
+                    <th style={{ padding: '16px 12px' }}>Acompanyants (Detall)</th>
+                    <th style={{ padding: '16px 12px' }}>Plat Titular</th>
                     <th style={{ padding: '16px 12px' }}>Restriccions / Al·lèrgies</th>
                   </tr>
                 </thead>
@@ -431,8 +487,8 @@ export default function AdminPage() {
                   ) : (
                     guests.map(guest => (
                       <tr key={guest.id} style={{ borderBottom: '1px solid rgba(217, 197, 178, 0.3)', transition: 'background 0.2s ease' }}>
-                        <td style={{ padding: '16px 12px', fontWeight: 500 }}>{guest.name}</td>
-                        <td style={{ padding: '16px 12px' }}>
+                        <td style={{ padding: '16px 12px', fontWeight: 500, verticalAlign: 'top' }}>{guest.name}</td>
+                        <td style={{ padding: '16px 12px', verticalAlign: 'top' }}>
                           <span style={{ 
                             background: guest.attending ? 'rgba(76, 175, 80, 0.12)' : 'rgba(244, 67, 54, 0.12)', 
                             color: guest.attending ? '#2e7d32' : '#c62828',
@@ -445,10 +501,54 @@ export default function AdminPage() {
                             {guest.attending ? '✓ Sí, assisteix' : '✗ No assisteix'}
                           </span>
                         </td>
-                        <td style={{ padding: '16px 12px', color: 'var(--text-muted)' }}>
-                          {guest.attending ? `+${guest.companions} addicionals` : '0'}
+                        <td style={{ padding: '16px 12px', verticalAlign: 'top' }}>
+                          {!guest.attending || guest.companions === 0 ? (
+                            <span style={{ color: 'var(--text-muted)' }}>0 (Individual)</span>
+                          ) : (
+                            <div>
+                              <div style={{ fontWeight: 600, color: 'var(--primary-dark)', marginBottom: '6px', fontSize: '0.88rem' }}>
+                                +{guest.companions} {guest.companions === 1 ? 'acompanyant' : 'acompanyants'}:
+                              </div>
+                              {guest.companionDetails && guest.companionDetails.length > 0 ? (
+                                <div style={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
+                                  {guest.companionDetails.map((c, i) => (
+                                    <div key={i} style={{ 
+                                      background: '#ffffff', 
+                                      border: '1px solid rgba(197, 155, 78, 0.25)', 
+                                      borderRadius: '8px', 
+                                      padding: '4px 8px', 
+                                      fontSize: '0.82rem',
+                                      display: 'flex',
+                                      alignItems: 'center',
+                                      justifyContent: 'space-between',
+                                      gap: '8px'
+                                    }}>
+                                      <span style={{ fontWeight: 500 }}>
+                                        {c.name && c.name.trim() ? c.name.trim() : `Acompanyant #${i + 1}`}
+                                      </span>
+                                      <span style={{ 
+                                        fontSize: '0.75rem', 
+                                        padding: '2px 6px', 
+                                        borderRadius: '10px', 
+                                        background: c.isChild ? 'rgba(255, 152, 0, 0.15)' : 'rgba(197, 155, 78, 0.12)',
+                                        color: c.isChild ? '#e65100' : 'var(--primary-dark)',
+                                        fontWeight: 600,
+                                        whiteSpace: 'nowrap'
+                                      }}>
+                                        {c.isChild ? 'Infant' : `Adult · ${c.mainCourse || 'Carn'}`}
+                                      </span>
+                                    </div>
+                                  ))}
+                                </div>
+                              ) : (
+                                <span style={{ fontSize: '0.82rem', color: 'var(--text-muted)' }}>
+                                  Sense noms registrats
+                                </span>
+                              )}
+                            </div>
+                          )}
                         </td>
-                        <td style={{ padding: '16px 12px' }}>
+                        <td style={{ padding: '16px 12px', verticalAlign: 'top' }}>
                           {guest.attending ? (
                             <span style={{ 
                               background: 'rgba(197, 155, 78, 0.12)', 
@@ -463,7 +563,7 @@ export default function AdminPage() {
                             </span>
                           ) : '—'}
                         </td>
-                        <td style={{ padding: '16px 12px', color: guest.dietary ? 'var(--text-color)' : 'var(--text-muted)' }}>
+                        <td style={{ padding: '16px 12px', color: guest.dietary ? 'var(--text-color)' : 'var(--text-muted)', verticalAlign: 'top' }}>
                           {guest.dietary || '—'}
                         </td>
                       </tr>

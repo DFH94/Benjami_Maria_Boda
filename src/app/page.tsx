@@ -2,6 +2,12 @@
 
 import { useState, useEffect } from 'react';
 
+interface CompanionDetail {
+  name: string;
+  isChild: boolean;
+  mainCourse: string;
+}
+
 export default function Home() {
   const [formData, setFormData] = useState({
     name: '',
@@ -10,10 +16,41 @@ export default function Home() {
     mainCourse: 'Carn',
     dietary: ''
   });
+  const [companionDetails, setCompanionDetails] = useState<CompanionDetail[]>([]);
   const [selectedDietary, setSelectedDietary] = useState<string[]>([]);
   const [dietaryOther, setDietaryOther] = useState('');
   const [status, setStatus] = useState('');
   const [copiedIban, setCopiedIban] = useState(false);
+
+  const handleCompanionsChange = (count: number) => {
+    const safeCount = Math.max(0, Math.min(10, count));
+    setFormData(prev => ({ ...prev, companions: safeCount }));
+    setCompanionDetails(prev => {
+      const updated: CompanionDetail[] = [];
+      for (let i = 0; i < safeCount; i++) {
+        if (prev[i]) {
+          updated.push(prev[i]);
+        } else {
+          updated.push({ name: '', isChild: false, mainCourse: 'Carn' });
+        }
+      }
+      return updated;
+    });
+  };
+
+  const handleUpdateCompanion = (index: number, field: keyof CompanionDetail, value: any) => {
+    setCompanionDetails(prev => {
+      const updated = [...prev];
+      if (field === 'isChild' && value === true) {
+        updated[index] = { ...updated[index], isChild: true, mainCourse: 'Menú Infantil' };
+      } else if (field === 'isChild' && value === false) {
+        updated[index] = { ...updated[index], isChild: false, mainCourse: 'Carn' };
+      } else {
+        updated[index] = { ...updated[index], [field]: value };
+      }
+      return updated;
+    });
+  };
 
   const DIETARY_OPTIONS = [
     { id: 'celiac', label: 'Sense Gluten / Celíac' },
@@ -96,6 +133,7 @@ export default function Home() {
           name: formData.name.trim(),
           attending: formData.attending === 'yes',
           companions: parseInt(formData.companions.toString(), 10) || 0,
+          companionDetails: formData.attending === 'yes' ? companionDetails : [],
           mainCourse: formData.mainCourse || 'Carn',
           dietary: compiledDietary
         })
@@ -742,8 +780,75 @@ export default function Home() {
                       max="10"
                       className="input-field" 
                       value={formData.companions}
-                      onChange={(e) => setFormData({...formData, companions: parseInt(e.target.value.toString(), 10) || 0})}
+                      onChange={(e) => handleCompanionsChange(parseInt(e.target.value, 10) || 0)}
                     />
+
+                    {/* Unfolded Companion Details List */}
+                    {formData.companions > 0 && (
+                      <div className="companion-cards-container">
+                        <p style={{ fontSize: '0.86rem', fontWeight: 600, color: 'var(--primary-color)', margin: '4px 0 2px 0' }}>
+                          Detall dels acompanyants:
+                        </p>
+                        {companionDetails.map((comp, idx) => (
+                          <div key={idx} className="companion-detail-card">
+                            <div className="companion-card-header">
+                              <span>Acompanyant #{idx + 1}</span>
+                              <label className="companion-child-toggle">
+                                <input 
+                                  type="checkbox"
+                                  checked={comp.isChild}
+                                  onChange={(e) => handleUpdateCompanion(idx, 'isChild', e.target.checked)}
+                                />
+                                <span>És un infant / nen?</span>
+                              </label>
+                            </div>
+
+                            <input 
+                              type="text"
+                              className="input-field"
+                              style={{ marginBottom: '10px', fontSize: '0.9rem' }}
+                              placeholder={`Nom complet de l'acompanyant #${idx + 1}`}
+                              value={comp.name}
+                              onChange={(e) => handleUpdateCompanion(idx, 'name', e.target.value)}
+                            />
+
+                            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '8px' }}>
+                              <span style={{ fontSize: '0.82rem', color: 'var(--text-muted)' }}>Plat:</span>
+                              <div className="companion-dish-select">
+                                {comp.isChild ? (
+                                  <span style={{ fontSize: '0.82rem', color: 'var(--accent-gold-dark)', fontWeight: 600, background: 'rgba(197, 155, 78, 0.12)', padding: '2px 8px', borderRadius: '8px' }}>
+                                    Menú Infantil
+                                  </span>
+                                ) : (
+                                  <>
+                                    <label className="companion-dish-option">
+                                      <input 
+                                        type="radio"
+                                        name={`comp-dish-${idx}`}
+                                        value="Carn"
+                                        checked={comp.mainCourse === 'Carn'}
+                                        onChange={() => handleUpdateCompanion(idx, 'mainCourse', 'Carn')}
+                                      />
+                                      <span>Carn</span>
+                                    </label>
+                                    <label className="companion-dish-option">
+                                      <input 
+                                        type="radio"
+                                        name={`comp-dish-${idx}`}
+                                        value="Peix"
+                                        checked={comp.mainCourse === 'Peix'}
+                                        onChange={() => handleUpdateCompanion(idx, 'mainCourse', 'Peix')}
+                                      />
+                                      <span>Peix</span>
+                                    </label>
+                                  </>
+                                )}
+                              </div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    )}
 
                     {/* Main Course Selector (Carn o Peix) */}
                     <label className="form-label" style={{ marginTop: '10px' }}>

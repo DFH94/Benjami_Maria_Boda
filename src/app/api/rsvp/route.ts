@@ -15,6 +15,7 @@ export async function POST(request: Request) {
       name: data.name.trim(),
       attending: data.attending,
       companions: data.companions || 0,
+      companionDetails: Array.isArray(data.companionDetails) ? data.companionDetails : [],
       mainCourse: data.mainCourse || 'Carn',
       dietary: data.dietary || '',
       createdAt: new Date().toISOString()

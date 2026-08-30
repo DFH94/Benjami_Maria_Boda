@@ -658,6 +658,71 @@ a {
   cursor: pointer;
 }
 
+/* Companion details accordion / card list */
+.companion-cards-container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin: 14px 0 20px 0;
+}
+
+.companion-detail-card {
+  background: #ffffff;
+  border: 1px solid rgba(197, 155, 78, 0.35);
+  border-radius: 12px;
+  padding: 14px 16px;
+  box-shadow: 0 2px 8px rgba(140, 115, 85, 0.05);
+  transition: border-color 0.2s ease;
+}
+
+.companion-detail-card:focus-within {
+  border-color: var(--accent-gold);
+}
+
+.companion-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  font-weight: 600;
+  font-size: 0.88rem;
+  color: var(--primary-color);
+}
+
+.companion-child-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  font-size: 0.84rem;
+  color: var(--text-color);
+  user-select: none;
+  background: rgba(197, 155, 78, 0.08);
+  padding: 4px 10px;
+  border-radius: 15px;
+  border: 1px solid rgba(197, 155, 78, 0.25);
+}
+
+.companion-child-toggle input {
+  accent-color: var(--primary-color);
+  cursor: pointer;
+}
+
+.companion-dish-select {
+  display: flex;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.companion-dish-option {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.82rem;
+  cursor: pointer;
+  color: var(--text-color);
+}
+
 /* Copy to clipboard button */
 .copy-pill-btn {
   display: inline-flex;
