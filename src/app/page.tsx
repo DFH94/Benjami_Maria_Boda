@@ -177,6 +177,9 @@ export default function Home() {
         </div>
       </nav>
 
+      {/* White spacer */}
+      <div className="section-spacer" />
+
       {/* History Section with Blurred BenjaMaria.jpg background & photo frame */}
       <section id="historia" className="section blurred-section-bg" style={{ position: 'relative' }}>
         {/* Blurred background image layer */}
@@ -247,6 +250,9 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* White spacer */}
+      <div className="section-spacer" />
 
       {/* Location Section with Blurred entrada-villa-retiro.jpg background & photo frame */}
       <section id="ubicacio" className="section blurred-section-bg" style={{ position: 'relative' }}>
@@ -343,6 +349,9 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* White spacer */}
+      <div className="section-spacer" />
 
       {/* Planning Section with Blurred Garden Background */}
       <section id="planning" className="section blurred-section-bg" style={{ position: 'relative' }}>
@@ -441,6 +450,9 @@ export default function Home() {
         </div>
       </section>
 
+      {/* White spacer */}
+      <div className="section-spacer" />
+
       {/* RSVP Section */}
       <section id="rsvp" className="section" style={{ backgroundColor: '#ffffff' }}>
         <div className="container">
@@ -526,6 +538,9 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* White spacer */}
+      <div className="section-spacer" />
 
       {/* Footer */}
       <footer style={{ 
