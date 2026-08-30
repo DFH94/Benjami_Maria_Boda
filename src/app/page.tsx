@@ -248,7 +248,7 @@ export default function Home() {
         </div>
 
         <a 
-          href="#rsvp" 
+          href="#formulari" 
           className="btn-primary"
           style={{ marginTop: '5px' }}
         >
@@ -281,8 +281,8 @@ export default function Home() {
               </a>
             </li>
             <li>
-              <a href="#rsvp" className="nav-link-item">
-                RSVP
+              <a href="#formulari" className="nav-link-item">
+                Formulari
               </a>
             </li>
             <li>
@@ -733,8 +733,8 @@ export default function Home() {
       {/* White spacer */}
       <div className="section-spacer" />
 
-      {/* RSVP Section */}
-      <section id="rsvp" className="section" style={{ backgroundColor: '#ffffff' }}>
+      {/* Formulari Section */}
+      <section id="formulari" className="section" style={{ backgroundColor: '#ffffff' }}>
         <div className="container">
           <p className="text-center" style={{ fontSize: '0.85rem', letterSpacing: '4px', textTransform: 'uppercase', color: 'var(--accent-gold)', fontWeight: 600, marginBottom: '6px' }}>
             T'esperem amb Il·lusió
