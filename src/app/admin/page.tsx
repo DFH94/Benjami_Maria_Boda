@@ -512,86 +512,98 @@ export default function AdminPage() {
               </div>
             </div>
 
-            {/* List Mode for Guests & Indented Companions */}
-            <div className="admin-guest-list">
+            {/* Perfectly Aligned Grid List Mode */}
+            <div className="admin-guest-list-wrapper">
+              <div className="guest-list-header">
+                <div>Convidat</div>
+                <div>Tipus</div>
+                <div>Assistència</div>
+                <div>Plat Principal</div>
+                <div>Al·lèrgies / Restriccions</div>
+              </div>
+
               {guests.length === 0 ? (
-                <div className="glass-card" style={{ padding: '35px 20px', textAlign: 'center', color: 'var(--text-muted)' }}>
+                <div style={{ padding: '40px 20px', textAlign: 'center', color: 'var(--text-muted)' }}>
                   Encara no hi ha convidats registrats.
                 </div>
               ) : (
                 guests.map(guest => (
-                  <div key={guest.id} className="guest-group-container">
+                  <div key={guest.id} className="guest-group-block">
                     
-                    {/* Principal (Titular) Card */}
-                    <div className="guest-item-card is-principal">
-                      {/* Left: Name and titular tag */}
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap' }}>
-                        <span style={{ fontWeight: 700, fontSize: '1.05rem', color: 'var(--primary-color)' }}>
+                    {/* Principal (Titular) Grid Row */}
+                    <div className="guest-row-grid is-principal">
+                      {/* 1. Name */}
+                      <div className="guest-col-name" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                        <span style={{ fontWeight: 700, fontSize: '1rem', color: 'var(--primary-color)' }}>
                           {guest.name}
                         </span>
+                        {guest.attending && guest.companions > 0 && (
+                          <span style={{ fontSize: '0.8rem', color: 'var(--accent-gold-dark)', fontWeight: 600 }}>
+                            (+{guest.companions})
+                          </span>
+                        )}
+                      </div>
+
+                      {/* 2. Type */}
+                      <div>
                         <span style={{ 
                           background: 'rgba(140, 115, 85, 0.12)', 
                           color: 'var(--primary-dark)', 
                           fontSize: '0.72rem', 
-                          padding: '2px 8px', 
+                          padding: '3px 9px', 
                           borderRadius: '10px', 
                           fontWeight: 700, 
                           letterSpacing: '0.5px',
-                          textTransform: 'uppercase'
+                          textTransform: 'uppercase',
+                          display: 'inline-block'
                         }}>
                           Titular
                         </span>
-                        {guest.attending && guest.companions > 0 && (
-                          <span style={{ fontSize: '0.84rem', color: 'var(--accent-gold-dark)', fontWeight: 600 }}>
-                            +{guest.companions} {guest.companions === 1 ? 'acompanyant' : 'acompanyants'}
-                          </span>
-                        )}
                       </div>
 
-                      {/* Right: Badges */}
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
+                      {/* 3. Attendance */}
+                      <div>
                         <span style={{ 
                           background: guest.attending ? 'rgba(76, 175, 80, 0.12)' : 'rgba(244, 67, 54, 0.12)', 
                           color: guest.attending ? '#2e7d32' : '#c62828',
                           border: `1px solid ${guest.attending ? 'rgba(76, 175, 80, 0.3)' : 'rgba(244, 67, 54, 0.3)'}`,
-                          padding: '4px 12px', 
+                          padding: '4px 10px', 
                           borderRadius: '20px', 
                           fontSize: '0.82rem', 
-                          fontWeight: 600
+                          fontWeight: 600,
+                          whiteSpace: 'nowrap',
+                          display: 'inline-block'
                         }}>
-                          {guest.attending ? '✓ Assisteix' : '✗ No assisteix'}
+                          {guest.attending ? '✓ Sí, assisteix' : '✗ No assisteix'}
                         </span>
+                      </div>
 
-                        {guest.attending && (
+                      {/* 4. Dish */}
+                      <div>
+                        {guest.attending ? (
                           <span style={{ 
                             background: 'rgba(197, 155, 78, 0.12)', 
                             border: '1px solid rgba(197, 155, 78, 0.35)', 
-                            padding: '4px 12px', 
-                            borderRadius: '16px', 
-                            fontSize: '0.82rem', 
-                            fontWeight: 600,
-                            color: 'var(--primary-dark)'
-                          }}>
-                            Plat: {guest.mainCourse || 'Carn'}
-                          </span>
-                        )}
-
-                        {guest.dietary && (
-                          <span style={{ 
-                            background: '#ffffff', 
-                            border: '1px solid rgba(140, 115, 85, 0.25)', 
                             padding: '4px 10px', 
                             borderRadius: '16px', 
                             fontSize: '0.82rem', 
-                            color: 'var(--text-color)'
+                            fontWeight: 600,
+                            color: 'var(--primary-dark)',
+                            whiteSpace: 'nowrap',
+                            display: 'inline-block'
                           }}>
-                            {guest.dietary}
+                            {guest.mainCourse || 'Carn'}
                           </span>
-                        )}
+                        ) : '—'}
+                      </div>
+
+                      {/* 5. Dietary */}
+                      <div style={{ fontSize: '0.86rem', color: guest.dietary ? 'var(--text-color)' : 'var(--text-muted)' }}>
+                        {guest.dietary || '—'}
                       </div>
                     </div>
 
-                    {/* Companions Sub-list with Indentation (Tabulació al mateix nivell) */}
+                    {/* Companions Grid Rows with Left Tabulació */}
                     {guest.attending && guest.companions > 0 && (
                       ((guest.companionDetails && guest.companionDetails.length > 0)
                         ? guest.companionDetails
@@ -601,52 +613,68 @@ export default function AdminPage() {
                             mainCourse: guest.mainCourse || 'Carn'
                           }))
                       ).map((comp, idx) => (
-                        <div key={idx} className="guest-item-card is-companion">
-                          {/* Left: Companion Name & Tag */}
-                          <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap' }}>
-                            <span style={{ color: 'var(--accent-gold-dark)', fontWeight: 700, fontSize: '1.1rem' }}>↳</span>
-                            <span style={{ fontWeight: 600, fontSize: '1rem', color: 'var(--text-color)' }}>
+                        <div key={idx} className="guest-row-grid is-companion">
+                          {/* 1. Name with indentation */}
+                          <div className="guest-col-name">
+                            <span style={{ fontWeight: 600, fontSize: '0.96rem', color: 'var(--text-color)' }}>
                               {comp.name && comp.name.trim() ? comp.name.trim() : `Acompanyant #${idx + 1}`}
                             </span>
+                          </div>
+
+                          {/* 2. Type */}
+                          <div>
                             <span style={{ 
                               fontSize: '0.72rem', 
-                              padding: '2px 8px', 
+                              padding: '3px 9px', 
                               borderRadius: '10px', 
                               background: comp.isChild ? 'rgba(255, 152, 0, 0.15)' : 'rgba(197, 155, 78, 0.12)',
                               color: comp.isChild ? '#e65100' : 'var(--primary-dark)',
                               fontWeight: 700,
                               letterSpacing: '0.5px',
-                              textTransform: 'uppercase'
+                              textTransform: 'uppercase',
+                              display: 'inline-block'
                             }}>
                               {comp.isChild ? 'Nen / Infant' : 'Adult'}
                             </span>
                           </div>
 
-                          {/* Right: Companion Badges (Identical Design Level) */}
-                          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
+                          {/* 3. Attendance */}
+                          <div>
                             <span style={{ 
                               background: 'rgba(76, 175, 80, 0.12)', 
                               color: '#2e7d32',
                               border: '1px solid rgba(76, 175, 80, 0.3)',
-                              padding: '4px 12px', 
+                              padding: '4px 10px', 
                               borderRadius: '20px', 
                               fontSize: '0.82rem', 
-                              fontWeight: 600
+                              fontWeight: 600,
+                              whiteSpace: 'nowrap',
+                              display: 'inline-block'
                             }}>
                               ✓ Sí, assisteix
                             </span>
+                          </div>
 
+                          {/* 4. Dish */}
+                          <div>
                             <span style={{ 
                               background: 'rgba(197, 155, 78, 0.12)', 
                               border: '1px solid rgba(197, 155, 78, 0.35)', 
-                              padding: '4px 12px', 
+                              padding: '4px 10px', 
                               borderRadius: '16px', 
                               fontSize: '0.82rem', 
                               fontWeight: 600,
-                              color: 'var(--primary-dark)'
+                              color: 'var(--primary-dark)',
+                              whiteSpace: 'nowrap',
+                              display: 'inline-block'
                             }}>
-                              Plat: {comp.isChild ? 'Menú Infantil' : (comp.mainCourse || 'Carn')}
+                              {comp.isChild ? 'Menú Infantil' : (comp.mainCourse || 'Carn')}
                             </span>
+                          </div>
+
+                          {/* 5. Dietary */}
+                          <div style={{ fontSize: '0.86rem', color: 'var(--text-muted)' }}>
+                            {guest.dietary ? `(Grup: ${guest.dietary})` : '—'}
                           </div>
                         </div>
                       ))
