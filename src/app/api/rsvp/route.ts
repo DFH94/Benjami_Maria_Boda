@@ -1,45 +1,32 @@
 import { NextResponse } from 'next/server';
-import fs from 'fs';
-import path from 'path';
+import { readGuests, saveGuests } from '@/lib/storage';
 
 export async function POST(request: Request) {
   try {
     const data = await request.json();
     
-    // Validar datos básicos
+    // Validar dades bàsiques
     if (!data.name || data.attending === undefined) {
-      return NextResponse.json({ error: 'Faltan datos obligatorios' }, { status: 400 });
+      return NextResponse.json({ error: 'Falten dades obligatòries' }, { status: 400 });
     }
 
     const newGuest = {
       id: Date.now().toString(),
-      name: data.name,
+      name: data.name.trim(),
       attending: data.attending,
       companions: data.companions || 0,
       dietary: data.dietary || '',
       createdAt: new Date().toISOString()
     };
 
-    const filePath = path.join(process.cwd(), 'data', 'guests.json');
-    
-    let guests = [];
-    if (fs.existsSync(filePath)) {
-      const fileData = fs.readFileSync(filePath, 'utf8');
-      guests = JSON.parse(fileData);
-    }
-    
+    const guests = readGuests();
     guests.push(newGuest);
-    
-    // Asegurar que el directorio data exista
-    if (!fs.existsSync(path.dirname(filePath))) {
-      fs.mkdirSync(path.dirname(filePath), { recursive: true });
-    }
-    
-    fs.writeFileSync(filePath, JSON.stringify(guests, null, 2));
+    saveGuests(guests);
 
     return NextResponse.json({ success: true, guest: newGuest });
   } catch (error) {
     console.error('Error saving RSVP:', error);
-    return NextResponse.json({ error: 'Error interno del servidor' }, { status: 500 });
+    return NextResponse.json({ error: 'Error intern del servidor' }, { status: 500 });
   }
 }
+
