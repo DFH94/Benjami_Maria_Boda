@@ -7,6 +7,7 @@ export default function Home() {
     name: '',
     attending: 'yes',
     companions: 0,
+    mainCourse: 'Carn',
     dietary: ''
   });
   const [selectedDietary, setSelectedDietary] = useState<string[]>([]);
@@ -95,6 +96,7 @@ export default function Home() {
           name: formData.name.trim(),
           attending: formData.attending === 'yes',
           companions: parseInt(formData.companions.toString(), 10) || 0,
+          mainCourse: formData.mainCourse || 'Carn',
           dietary: compiledDietary
         })
       });
@@ -742,6 +744,39 @@ export default function Home() {
                       value={formData.companions}
                       onChange={(e) => setFormData({...formData, companions: parseInt(e.target.value.toString(), 10) || 0})}
                     />
+
+                    {/* Main Course Selector (Carn o Peix) */}
+                    <label className="form-label" style={{ marginTop: '10px' }}>
+                      Plat Principal *
+                    </label>
+                    <p style={{ fontSize: '0.82rem', color: 'var(--text-muted)', marginBottom: '10px' }}>
+                      Tria la teva opció de segon plat per al banquet:
+                    </p>
+                    <div className="dish-selector-grid">
+                      <label className={`dish-option-card ${formData.mainCourse === 'Carn' ? 'selected' : ''}`}>
+                        <input 
+                          type="radio" 
+                          name="mainCourse" 
+                          value="Carn" 
+                          checked={formData.mainCourse === 'Carn'} 
+                          onChange={() => setFormData({...formData, mainCourse: 'Carn'})}
+                          className="dish-radio-native"
+                        />
+                        <span>Opció Carn</span>
+                      </label>
+
+                      <label className={`dish-option-card ${formData.mainCourse === 'Peix' ? 'selected' : ''}`}>
+                        <input 
+                          type="radio" 
+                          name="mainCourse" 
+                          value="Peix" 
+                          checked={formData.mainCourse === 'Peix'} 
+                          onChange={() => setFormData({...formData, mainCourse: 'Peix'})}
+                          className="dish-radio-native"
+                        />
+                        <span>Opció Peix</span>
+                      </label>
+                    </div>
 
                     <label className="form-label" style={{ marginTop: '10px' }}>
                       Preferències de menú, al·lèrgies o intoleràncies

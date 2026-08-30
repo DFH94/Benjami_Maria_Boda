@@ -8,6 +8,7 @@ interface Guest {
   name: string;
   attending: boolean;
   companions: number;
+  mainCourse?: string;
   dietary?: string;
 }
 
@@ -316,6 +317,8 @@ export default function AdminPage() {
   const totalAttending = attendingGuests.length + attendingGuests.reduce((acc, curr) => acc + (curr.companions || 0), 0);
   const totalDeclined = guests.filter(g => !g.attending).length;
   const totalOccupiedSeats = Object.keys(seating).length;
+  const totalMeat = attendingGuests.filter(g => (g.mainCourse || 'Carn') === 'Carn').length;
+  const totalFish = attendingGuests.filter(g => g.mainCourse === 'Peix').length;
 
   return (
     <main className="section" style={{ minHeight: '100vh', backgroundColor: 'var(--bg-color)', padding: '40px 16px' }}>
@@ -396,25 +399,32 @@ export default function AdminPage() {
               <div style={{ background: 'var(--primary-color)', color: '#fff', padding: '12px 24px', borderRadius: '30px', boxShadow: '0 4px 15px rgba(140, 115, 85, 0.2)' }}>
                 <p style={{ fontSize: '1.05rem', fontWeight: 600, margin: 0 }}>Total Confirmats: {totalAttending}</p>
               </div>
+              <div style={{ background: '#fff', border: '1px solid rgba(197, 155, 78, 0.5)', color: 'var(--primary-dark)', padding: '12px 20px', borderRadius: '30px', fontWeight: 600 }}>
+                <p style={{ fontSize: '0.95rem', margin: 0 }}>Plat Carn: {totalMeat}</p>
+              </div>
+              <div style={{ background: '#fff', border: '1px solid rgba(197, 155, 78, 0.5)', color: 'var(--primary-dark)', padding: '12px 20px', borderRadius: '30px', fontWeight: 600 }}>
+                <p style={{ fontSize: '0.95rem', margin: 0 }}>Plat Peix: {totalFish}</p>
+              </div>
               <div style={{ background: '#fff', border: '1px solid rgba(217, 197, 178, 0.6)', color: 'var(--text-muted)', padding: '12px 20px', borderRadius: '30px' }}>
                 <p style={{ fontSize: '0.95rem', margin: 0 }}>No assisteixen: {totalDeclined}</p>
               </div>
             </div>
 
             <div className="glass-card" style={{ padding: '25px', overflowX: 'auto' }}>
-              <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', minWidth: '600px' }}>
+              <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', minWidth: '700px' }}>
                 <thead>
                   <tr style={{ borderBottom: '2px solid rgba(140, 115, 85, 0.3)', color: 'var(--primary-color)', fontFamily: 'var(--font-title)', fontSize: '1.15rem' }}>
                     <th style={{ padding: '16px 12px' }}>Nom i Cognoms</th>
                     <th style={{ padding: '16px 12px' }}>Assistència</th>
                     <th style={{ padding: '16px 12px' }}>Acompanyants</th>
+                    <th style={{ padding: '16px 12px' }}>Plat Principal</th>
                     <th style={{ padding: '16px 12px' }}>Restriccions / Al·lèrgies</th>
                   </tr>
                 </thead>
                 <tbody>
                   {guests.length === 0 ? (
                     <tr>
-                      <td colSpan={4} style={{ padding: '35px 15px', textAlign: 'center', color: 'var(--text-muted)' }}>
+                      <td colSpan={5} style={{ padding: '35px 15px', textAlign: 'center', color: 'var(--text-muted)' }}>
                         Encara no hi ha convidats registrats.
                       </td>
                     </tr>
@@ -437,6 +447,21 @@ export default function AdminPage() {
                         </td>
                         <td style={{ padding: '16px 12px', color: 'var(--text-muted)' }}>
                           {guest.attending ? `+${guest.companions} addicionals` : '0'}
+                        </td>
+                        <td style={{ padding: '16px 12px' }}>
+                          {guest.attending ? (
+                            <span style={{ 
+                              background: 'rgba(197, 155, 78, 0.12)', 
+                              border: '1px solid rgba(197, 155, 78, 0.35)', 
+                              padding: '4px 12px', 
+                              borderRadius: '16px', 
+                              fontSize: '0.86rem', 
+                              fontWeight: 600,
+                              color: 'var(--primary-dark)'
+                            }}>
+                              {guest.mainCourse || 'Carn'}
+                            </span>
+                          ) : '—'}
                         </td>
                         <td style={{ padding: '16px 12px', color: guest.dietary ? 'var(--text-color)' : 'var(--text-muted)' }}>
                           {guest.dietary || '—'}

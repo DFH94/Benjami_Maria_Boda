@@ -616,6 +616,48 @@ a {
   cursor: pointer;
 }
 
+/* Dish Selector (Carn o Peix) */
+.dish-selector-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.dish-option-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 13px 18px;
+  background: #ffffff;
+  border: 1.5px solid rgba(197, 155, 78, 0.35);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  user-select: none;
+  font-size: 0.95rem;
+}
+
+.dish-option-card:hover {
+  border-color: var(--accent-gold);
+  background: #fdfbf8;
+}
+
+.dish-option-card.selected {
+  background: rgba(197, 155, 78, 0.12);
+  border-color: var(--accent-gold);
+  color: var(--primary-dark);
+  font-weight: 600;
+  box-shadow: 0 3px 10px rgba(197, 155, 78, 0.12);
+}
+
+.dish-radio-native {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--primary-color);
+  cursor: pointer;
+}
+
 /* Copy to clipboard button */
 .copy-pill-btn {
   display: inline-flex;
