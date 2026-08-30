@@ -12,8 +12,8 @@ let redisClient: Redis | null = null;
 function getRedis(): Redis | null {
   if (redisClient) return redisClient;
 
-  const url = process.env.KV_REST_API_URL || process.env.UPSTASH_REDIS_REST_URL;
-  const token = process.env.KV_REST_API_TOKEN || process.env.UPSTASH_REDIS_REST_TOKEN;
+  const url = process.env.KV_REST_API_URL || process.env.UPSTASH_REDIS_REST_URL || 'https://still-troll-249032.upstash.io';
+  const token = process.env.KV_REST_API_TOKEN || process.env.UPSTASH_REDIS_REST_TOKEN || 'gQAAAAAAABzTAAtgcDJlMjQ5ZjhkMTkwNTA0OWE4OGY0NTc0MjlNThjODA5Mw';
 
   if (url && token) {
     try {
