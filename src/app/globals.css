@@ -734,7 +734,7 @@ a {
 
 .guest-list-header {
   display: grid;
-  grid-template-columns: minmax(220px, 2.2fr) 120px 140px 140px minmax(180px, 1.8fr);
+  grid-template-columns: minmax(200px, 2.2fr) 100px 130px 130px minmax(150px, 1.6fr) 45px;
   align-items: center;
   gap: 12px;
   padding: 16px 20px;
@@ -743,7 +743,7 @@ a {
   font-size: 1.08rem;
   color: var(--primary-color);
   font-weight: 600;
-  min-width: 820px;
+  min-width: 860px;
   background: #faf8f5;
   border-top-left-radius: 16px;
   border-top-right-radius: 16px;
@@ -753,7 +753,7 @@ a {
   display: flex;
   flex-direction: column;
   border-bottom: 1px solid rgba(217, 197, 178, 0.35);
-  min-width: 820px;
+  min-width: 860px;
 }
 
 .guest-group-block:last-child {
@@ -762,7 +762,7 @@ a {
 
 .guest-row-grid {
   display: grid;
-  grid-template-columns: minmax(220px, 2.2fr) 120px 140px 140px minmax(180px, 1.8fr);
+  grid-template-columns: minmax(200px, 2.2fr) 100px 130px 130px minmax(150px, 1.6fr) 45px;
   align-items: center;
   gap: 12px;
   padding: 14px 20px;
@@ -796,6 +796,25 @@ a {
   color: var(--accent-gold-dark);
   font-weight: 700;
   font-size: 1.15rem;
+}
+
+.delete-guest-btn {
+  background: transparent;
+  border: 1px solid rgba(244, 67, 54, 0.25);
+  color: #c62828;
+  padding: 6px;
+  border-radius: 8px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.delete-guest-btn:hover {
+  background: rgba(244, 67, 54, 0.12);
+  border-color: #c62828;
+  transform: scale(1.08);
 }
 
 /* Copy to clipboard button */

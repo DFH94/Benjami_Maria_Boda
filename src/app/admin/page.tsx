@@ -111,6 +111,30 @@ export default function AdminPage() {
     }
   };
 
+  const handleDeleteGuest = async (id: string, name: string) => {
+    if (!window.confirm(`Segur que vols eliminar el registre de "${name}" (i els seus acompanyants) de la llista de convidats?`)) {
+      return;
+    }
+    try {
+      const res = await fetch('/api/guests', {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${password}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ id })
+      });
+      if (res.ok) {
+        const data = await res.json();
+        setGuests(data.guests || []);
+      } else {
+        alert('Error al eliminar el registre.');
+      }
+    } catch {
+      alert('Error de connexió.');
+    }
+  };
+
   const handleSaveSeating = async () => {
     setSaveStatus('Desant...');
     try {
@@ -520,6 +544,7 @@ export default function AdminPage() {
                 <div>Assistència</div>
                 <div>Plat Principal</div>
                 <div>Al·lèrgies / Restriccions</div>
+                <div style={{ textAlign: 'center', fontSize: '0.85rem' }}>Acció</div>
               </div>
 
               {guests.length === 0 ? (
@@ -601,6 +626,22 @@ export default function AdminPage() {
                       <div style={{ fontSize: '0.86rem', color: guest.dietary ? 'var(--text-color)' : 'var(--text-muted)' }}>
                         {guest.dietary || '—'}
                       </div>
+
+                      {/* 6. Action: Delete */}
+                      <div style={{ display: 'flex', justifyContent: 'center' }}>
+                        <button 
+                          onClick={() => handleDeleteGuest(guest.id, guest.name)}
+                          className="delete-guest-btn"
+                          title="Eliminar aquest registre"
+                        >
+                          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            <polyline points="3 6 5 6 21 6"></polyline>
+                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                            <line x1="10" y1="11" x2="10" y2="17"></line>
+                            <line x1="14" y1="11" x2="14" y2="17"></line>
+                          </svg>
+                        </button>
+                      </div>
                     </div>
 
                     {/* Companions Grid Rows with Left Tabulació */}
@@ -676,6 +717,9 @@ export default function AdminPage() {
                           <div style={{ fontSize: '0.86rem', color: guest.dietary ? 'var(--text-color)' : 'var(--text-muted)' }}>
                             {guest.dietary || '—'}
                           </div>
+
+                          {/* 6. Empty cell for companion row */}
+                          <div></div>
                         </div>
                       ))
                     )}
