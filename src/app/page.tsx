@@ -755,20 +755,18 @@ export default function Home() {
                       {DIETARY_OPTIONS.map((opt) => {
                         const isChecked = selectedDietary.includes(opt.label);
                         return (
-                          <div 
+                          <label 
                             key={opt.id}
                             className={`dietary-checkbox-item ${isChecked ? 'selected' : ''}`}
-                            onClick={() => handleToggleDietary(opt.label, opt.id)}
                           >
-                            <div className="dietary-checkbox-custom">
-                              {isChecked && (
-                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-                                  <polyline points="20 6 9 17 4 12"></polyline>
-                                </svg>
-                              )}
-                            </div>
+                            <input 
+                              type="checkbox"
+                              checked={isChecked}
+                              onChange={() => handleToggleDietary(opt.label, opt.id)}
+                              className="dietary-checkbox-native"
+                            />
                             <span>{opt.label}</span>
-                          </div>
+                          </label>
                         );
                       })}
                     </div>
