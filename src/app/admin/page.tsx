@@ -786,8 +786,8 @@ export default function AdminPage() {
             </div>
 
             {/* Banquet Table Visual Scheme */}
-            <div className="glass-card" style={{ padding: '30px 15px', marginBottom: '30px', overflowX: 'auto' }}>
-              <div style={{ minWidth: '1150px', padding: '10px 0' }}>
+            <div className="glass-card" style={{ padding: '20px 15px', marginBottom: '30px', overflowX: 'auto' }}>
+              <div style={{ minWidth: '1200px', padding: '55px 30px 55px 30px' }}>
                 
                 {/* SIDE A (DALT: Seients 1 a 25) */}
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(25, 1fr)', gap: '6px', marginBottom: '14px' }}>
@@ -822,7 +822,7 @@ export default function AdminPage() {
                       >
                         {/* Hover Tooltip with Full Name */}
                         {occupant && (
-                          <div className="seat-tooltip">
+                          <div className={`seat-tooltip ${seatNum <= 3 ? 'align-left' : ''} ${seatNum >= 23 ? 'align-right' : ''}`}>
                             <span style={{ color: 'var(--accent-gold)', fontWeight: 600, marginRight: '4px' }}>#{seatNum}</span>
                             <span>{occupant}</span>
                           </div>
@@ -936,7 +936,7 @@ export default function AdminPage() {
                       >
                         {/* Hover Tooltip with Full Name */}
                         {occupant && (
-                          <div className="seat-tooltip">
+                          <div className={`seat-tooltip tooltip-bottom ${seatNum <= 28 ? 'align-left' : ''} ${seatNum >= 48 ? 'align-right' : ''}`}>
                             <span style={{ color: 'var(--accent-gold)', fontWeight: 600, marginRight: '4px' }}>#{seatNum}</span>
                             <span>{occupant}</span>
                           </div>

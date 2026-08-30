@@ -289,34 +289,75 @@ a {
 /* Seat Tooltip for Table Planner */
 .seat-cell {
   position: relative;
+  transition: all 0.2s ease;
+}
+
+.seat-cell:hover {
+  z-index: 1000 !important;
 }
 
 .seat-cell:hover .seat-tooltip {
   visibility: visible;
   opacity: 1;
-  transform: translateX(-50%) translateY(-8px);
+  transform: translateX(-50%) translateY(-4px);
+}
+
+.seat-cell:hover .seat-tooltip.tooltip-bottom {
+  transform: translateX(-50%) translateY(4px);
+}
+
+.seat-cell:hover .seat-tooltip.align-left {
+  transform: translateX(0) translateY(-4px);
+}
+
+.seat-cell:hover .seat-tooltip.tooltip-bottom.align-left {
+  transform: translateX(0) translateY(4px);
+}
+
+.seat-cell:hover .seat-tooltip.align-right {
+  transform: translateX(0) translateY(-4px);
+}
+
+.seat-cell:hover .seat-tooltip.tooltip-bottom.align-right {
+  transform: translateX(0) translateY(4px);
 }
 
 .seat-tooltip {
   visibility: hidden;
   opacity: 0;
   position: absolute;
-  bottom: 105%;
+  bottom: calc(100% + 8px);
   left: 50%;
   transform: translateX(-50%) translateY(0);
-  background: rgba(45, 42, 38, 0.96);
-  backdrop-filter: blur(8px);
+  background: rgba(35, 32, 28, 0.97);
+  backdrop-filter: blur(10px);
   color: #fff;
-  padding: 6px 12px;
+  padding: 6px 14px;
   border-radius: 8px;
   font-size: 0.82rem;
   font-weight: 500;
   white-space: nowrap;
   pointer-events: none;
-  z-index: 999;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+  z-index: 9999;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
   transition: all 0.2s cubic-bezier(0.25, 1, 0.5, 1);
-  border: 1px solid rgba(217, 197, 178, 0.3);
+  border: 1px solid rgba(197, 155, 78, 0.45);
+}
+
+.seat-tooltip.tooltip-bottom {
+  bottom: auto;
+  top: calc(100% + 8px);
+}
+
+.seat-tooltip.align-left {
+  left: 0;
+  transform: translateX(0);
+}
+
+.seat-tooltip.align-right {
+  left: auto;
+  right: 0;
+  transform: translateX(0);
 }
 
 .seat-tooltip::after {
@@ -327,7 +368,24 @@ a {
   transform: translateX(-50%);
   border-width: 5px;
   border-style: solid;
-  border-color: rgba(45, 42, 38, 0.96) transparent transparent transparent;
+  border-color: rgba(35, 32, 28, 0.97) transparent transparent transparent;
+}
+
+.seat-tooltip.tooltip-bottom::after {
+  top: auto;
+  bottom: 100%;
+  border-color: transparent transparent rgba(35, 32, 28, 0.97) transparent;
+}
+
+.seat-tooltip.align-left::after {
+  left: 20px;
+  transform: translateX(0);
+}
+
+.seat-tooltip.align-right::after {
+  left: auto;
+  right: 20px;
+  transform: translateX(0);
 }
 
 /* Glassmorphism Luxury Cards */
