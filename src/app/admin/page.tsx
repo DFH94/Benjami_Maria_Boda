@@ -591,14 +591,21 @@ export default function AdminPage() {
                       </div>
                     </div>
 
-                    {/* Companions Sub-list with Indentation (Tabulació) */}
-                    {guest.attending && guest.companions > 0 && guest.companionDetails && guest.companionDetails.length > 0 && (
-                      guest.companionDetails.map((comp, idx) => (
+                    {/* Companions Sub-list with Indentation (Tabulació al mateix nivell) */}
+                    {guest.attending && guest.companions > 0 && (
+                      ((guest.companionDetails && guest.companionDetails.length > 0)
+                        ? guest.companionDetails
+                        : Array.from({ length: guest.companions }, (_, i) => ({
+                            name: `Acompanyant #${i + 1}`,
+                            isChild: false,
+                            mainCourse: guest.mainCourse || 'Carn'
+                          }))
+                      ).map((comp, idx) => (
                         <div key={idx} className="guest-item-card is-companion">
                           {/* Left: Companion Name & Tag */}
                           <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap' }}>
-                            <span style={{ color: 'var(--accent-gold-dark)', fontWeight: 700, fontSize: '1rem' }}>↳</span>
-                            <span style={{ fontWeight: 600, fontSize: '0.98rem', color: 'var(--text-color)' }}>
+                            <span style={{ color: 'var(--accent-gold-dark)', fontWeight: 700, fontSize: '1.1rem' }}>↳</span>
+                            <span style={{ fontWeight: 600, fontSize: '1rem', color: 'var(--text-color)' }}>
                               {comp.name && comp.name.trim() ? comp.name.trim() : `Acompanyant #${idx + 1}`}
                             </span>
                             <span style={{ 
@@ -608,6 +615,7 @@ export default function AdminPage() {
                               background: comp.isChild ? 'rgba(255, 152, 0, 0.15)' : 'rgba(197, 155, 78, 0.12)',
                               color: comp.isChild ? '#e65100' : 'var(--primary-dark)',
                               fontWeight: 700,
+                              letterSpacing: '0.5px',
                               textTransform: 'uppercase'
                             }}>
                               {comp.isChild ? 'Nen / Infant' : 'Adult'}
@@ -625,7 +633,7 @@ export default function AdminPage() {
                               fontSize: '0.82rem', 
                               fontWeight: 600
                             }}>
-                              ✓ Assisteix
+                              ✓ Sí, assisteix
                             </span>
 
                             <span style={{ 
