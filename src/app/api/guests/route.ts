@@ -1,6 +1,9 @@
 import { NextResponse } from 'next/server';
 import { readGuests } from '@/lib/storage';
 
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 export async function GET(request: Request) {
   // Verifiquem el token d'autorització (contrasenya)
   const authHeader = request.headers.get('Authorization');

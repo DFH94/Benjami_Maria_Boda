@@ -1,6 +1,9 @@
 import { NextResponse } from 'next/server';
 import { readSeating, saveSeating } from '@/lib/storage';
 
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 export async function GET(request: Request) {
   const authHeader = request.headers.get('Authorization');
   if (authHeader !== 'Bearer BM11062027') {

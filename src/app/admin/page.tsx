@@ -45,20 +45,25 @@ export default function AdminPage() {
 
   const TOTAL_SEATS = 50;
 
+  const [refreshing, setRefreshing] = useState(false);
+
   const fetchGuestsAndSeating = async (authToken: string) => {
     try {
-      // 1. Fetch Guests
-      const resGuests = await fetch('/api/guests', {
-        headers: { 'Authorization': `Bearer ${authToken}` }
+      setRefreshing(true);
+      // 1. Fetch Guests with cache busting
+      const resGuests = await fetch(`/api/guests?_t=${Date.now()}`, {
+        headers: { 'Authorization': `Bearer ${authToken}` },
+        cache: 'no-store'
       });
       if (resGuests.ok) {
         const data = await resGuests.json();
         setGuests(data.guests || []);
       }
 
-      // 2. Fetch Seating
-      const resSeating = await fetch('/api/seating', {
-        headers: { 'Authorization': `Bearer ${authToken}` }
+      // 2. Fetch Seating with cache busting
+      const resSeating = await fetch(`/api/seating?_t=${Date.now()}`, {
+        headers: { 'Authorization': `Bearer ${authToken}` },
+        cache: 'no-store'
       });
       if (resSeating.ok) {
         const data = await resSeating.json();
@@ -69,8 +74,19 @@ export default function AdminPage() {
       setError('');
     } catch {
       setError('Error de connexió');
+    } finally {
+      setRefreshing(false);
     }
   };
+
+  // Auto-refresh guest list periodically when authenticated
+  useEffect(() => {
+    if (!authenticated || !password) return;
+    const interval = setInterval(() => {
+      fetchGuestsAndSeating(password);
+    }, 12000);
+    return () => clearInterval(interval);
+  }, [authenticated, password]);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -378,62 +394,92 @@ export default function AdminPage() {
             <h1 className="section-title" style={{ textAlign: 'left', margin: 0, fontSize: '2.4rem' }}>Panell dels Nuvis</h1>
           </div>
 
-          {/* Tab selector buttons */}
-          <div style={{ display: 'flex', background: 'rgba(255, 255, 255, 0.9)', padding: '5px', borderRadius: '30px', border: '1px solid rgba(217, 197, 178, 0.6)', boxShadow: '0 4px 15px rgba(140, 115, 85, 0.08)' }}>
+          {/* Tab selector buttons & refresh */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap' }}>
             <button
-              onClick={() => setActiveTab('guests')}
+              onClick={() => fetchGuestsAndSeating(password)}
+              disabled={refreshing}
               style={{
-                padding: '10px 22px',
+                padding: '9px 16px',
                 borderRadius: '25px',
-                border: 'none',
+                border: '1px solid rgba(197, 155, 78, 0.4)',
+                background: '#ffffff',
+                color: 'var(--primary-dark)',
                 cursor: 'pointer',
-                fontFamily: 'var(--font-body)',
-                fontSize: '0.92rem',
+                fontSize: '0.86rem',
                 fontWeight: 600,
-                transition: 'all 0.3s ease',
-                background: activeTab === 'guests' ? 'var(--primary-color)' : 'transparent',
-                color: activeTab === 'guests' ? '#fff' : 'var(--text-color)',
-                display: 'flex',
+                display: 'inline-flex',
                 alignItems: 'center',
-                gap: '8px'
+                gap: '6px',
+                boxShadow: '0 2px 8px rgba(140, 115, 85, 0.08)',
+                transition: 'all 0.2s ease'
               }}
+              title="Actualitzar llista de convidats ara"
             >
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-                <circle cx="9" cy="7" r="4"></circle>
-                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
-                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" style={{ animation: refreshing ? 'spin 1s linear infinite' : 'none' }}>
+                <polyline points="23 4 23 10 17 10"></polyline>
+                <polyline points="1 20 1 14 7 14"></polyline>
+                <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
               </svg>
-              Llista de Convidats ({totalAttending})
+              {refreshing ? 'Actualitzant...' : 'Actualitzar'}
             </button>
 
-            <button
-              onClick={() => setActiveTab('seating')}
-              style={{
-                padding: '10px 22px',
-                borderRadius: '25px',
-                border: 'none',
-                cursor: 'pointer',
-                fontFamily: 'var(--font-body)',
-                fontSize: '0.92rem',
-                fontWeight: 600,
-                transition: 'all 0.3s ease',
-                background: activeTab === 'seating' ? 'var(--primary-color)' : 'transparent',
-                color: activeTab === 'seating' ? '#fff' : 'var(--text-color)',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '8px'
-              }}
-            >
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <rect x="2" y="7" width="20" height="10" rx="2"></rect>
-                <line x1="6" y1="17" x2="6" y2="21"></line>
-                <line x1="18" y1="17" x2="18" y2="21"></line>
-                <line x1="6" y1="3" x2="6" y2="7"></line>
-                <line x1="18" y1="3" x2="18" y2="7"></line>
-              </svg>
-              Situació de Taules ({totalOccupiedSeats}/50)
-            </button>
+            <div style={{ display: 'flex', background: 'rgba(255, 255, 255, 0.9)', padding: '5px', borderRadius: '30px', border: '1px solid rgba(217, 197, 178, 0.6)', boxShadow: '0 4px 15px rgba(140, 115, 85, 0.08)' }}>
+              <button
+                onClick={() => setActiveTab('guests')}
+                style={{
+                  padding: '10px 22px',
+                  borderRadius: '25px',
+                  border: 'none',
+                  cursor: 'pointer',
+                  fontFamily: 'var(--font-body)',
+                  fontSize: '0.92rem',
+                  fontWeight: 600,
+                  transition: 'all 0.3s ease',
+                  background: activeTab === 'guests' ? 'var(--primary-color)' : 'transparent',
+                  color: activeTab === 'guests' ? '#fff' : 'var(--text-color)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '8px'
+                }}
+              >
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                  <circle cx="9" cy="7" r="4"></circle>
+                  <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                  <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                </svg>
+                Llista de Convidats ({totalAttending})
+              </button>
+
+              <button
+                onClick={() => setActiveTab('seating')}
+                style={{
+                  padding: '10px 22px',
+                  borderRadius: '25px',
+                  border: 'none',
+                  cursor: 'pointer',
+                  fontFamily: 'var(--font-body)',
+                  fontSize: '0.92rem',
+                  fontWeight: 600,
+                  transition: 'all 0.3s ease',
+                  background: activeTab === 'seating' ? 'var(--primary-color)' : 'transparent',
+                  color: activeTab === 'seating' ? '#fff' : 'var(--text-color)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '8px'
+                }}
+              >
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <rect x="2" y="7" width="20" height="10" rx="2"></rect>
+                  <line x1="6" y1="17" x2="6" y2="21"></line>
+                  <line x1="18" y1="17" x2="18" y2="21"></line>
+                  <line x1="6" y1="3" x2="6" y2="7"></line>
+                  <line x1="18" y1="3" x2="18" y2="7"></line>
+                </svg>
+                Situació de Taules ({totalOccupiedSeats}/50)
+              </button>
+            </div>
           </div>
         </div>
 
