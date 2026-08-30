@@ -9,8 +9,36 @@ export default function Home() {
     companions: 0,
     dietary: ''
   });
+  const [selectedDietary, setSelectedDietary] = useState<string[]>([]);
+  const [dietaryOther, setDietaryOther] = useState('');
   const [status, setStatus] = useState('');
   const [copiedIban, setCopiedIban] = useState(false);
+
+  const DIETARY_OPTIONS = [
+    { id: 'celiac', label: 'Sense Gluten / Celíac', icon: '🌾' },
+    { id: 'lactose', label: 'Intolerància a la Lactosa', icon: '🥛' },
+    { id: 'vegetarian', label: 'Menú Vegetarià', icon: '🥦' },
+    { id: 'vegan', label: 'Menú Vegà', icon: '🌱' },
+    { id: 'nuts', label: 'Al·lèrgia a la Fruita Seca', icon: '🥜' },
+    { id: 'seafood', label: 'Al·lèrgia al Marisc / Peix', icon: '🦐' },
+    { id: 'kids', label: 'Menú Infantil', icon: '👶' },
+    { id: 'none', label: 'Cap (Menú Estàndard)', icon: '✨' },
+  ];
+
+  const handleToggleDietary = (label: string, id: string) => {
+    if (id === 'none') {
+      setSelectedDietary(['Cap (Menú Estàndard)']);
+      return;
+    }
+    
+    let updated = selectedDietary.filter(item => item !== 'Cap (Menú Estàndard)');
+    if (updated.includes(label)) {
+      updated = updated.filter(item => item !== label);
+    } else {
+      updated.push(label);
+    }
+    setSelectedDietary(updated);
+  };
 
   const [timeLeft, setTimeLeft] = useState({
     days: 0,
@@ -53,14 +81,21 @@ export default function Home() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setStatus('loading');
+
+    const compiledDietary = [
+      ...selectedDietary,
+      dietaryOther.trim() ? `Altres: ${dietaryOther.trim()}` : ''
+    ].filter(Boolean).join(', ') || (formData.attending === 'yes' ? 'Cap (Menú Estàndard)' : '');
+
     try {
       const res = await fetch('/api/rsvp', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          ...formData,
+          name: formData.name.trim(),
           attending: formData.attending === 'yes',
-          companions: parseInt(formData.companions.toString(), 10)
+          companions: parseInt(formData.companions.toString(), 10) || 0,
+          dietary: compiledDietary
         })
       });
       if (res.ok) {
@@ -691,14 +726,46 @@ export default function Home() {
                       onChange={(e) => setFormData({...formData, companions: parseInt(e.target.value.toString(), 10) || 0})}
                     />
 
-                    <label className="form-label">Al·lèrgies, intoleràncies o menú especial</label>
-                    <textarea 
-                      className="input-field" 
-                      rows={3} 
-                      placeholder="Ex. Sóc celíac, menú vegetarià, al·lèrgic al marisc o fruits secs..."
-                      value={formData.dietary}
-                      onChange={(e) => setFormData({...formData, dietary: e.target.value})}
-                    ></textarea>
+                    <label className="form-label" style={{ marginTop: '10px' }}>
+                      Preferències de menú, al·lèrgies o intoleràncies
+                    </label>
+                    <p style={{ fontSize: '0.82rem', color: 'var(--text-muted)', marginBottom: '10px' }}>
+                      Selecciona totes les opcions que s'apliquin a tu o als teus acompanyants:
+                    </p>
+
+                    {/* Checkbox Tiles Grid */}
+                    <div className="dietary-grid">
+                      {DIETARY_OPTIONS.map((opt) => {
+                        const isChecked = selectedDietary.includes(opt.label);
+                        return (
+                          <div 
+                            key={opt.id}
+                            className={`dietary-checkbox-card ${isChecked ? 'selected' : ''}`}
+                            onClick={() => handleToggleDietary(opt.label, opt.id)}
+                          >
+                            <div className="dietary-checkbox-custom">
+                              {isChecked && (
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                                  <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg>
+                              )}
+                            </div>
+                            <span>{opt.icon} {opt.label}</span>
+                          </div>
+                        );
+                      })}
+                    </div>
+
+                    <label className="form-label" style={{ fontSize: '0.86rem', marginTop: '12px' }}>
+                      Altres especificacions o observacions (opcional)
+                    </label>
+                    <input 
+                      type="text"
+                      className="input-field"
+                      placeholder="Ex. Embarassada, al·lèrgia al kiwi, etc."
+                      value={dietaryOther}
+                      onChange={(e) => setDietaryOther(e.target.value)}
+                    />
                   </>
                 )}
 
