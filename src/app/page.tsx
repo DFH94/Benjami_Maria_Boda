@@ -793,6 +793,39 @@ export default function Home() {
 
                 {formData.attending === 'yes' && (
                   <>
+                    {/* Main Course Selector for Primary Guest (Carn o Peix) */}
+                    <label className="form-label">
+                      El teu Plat Principal *
+                    </label>
+                    <p style={{ fontSize: '0.82rem', color: 'var(--text-muted)', marginBottom: '10px' }}>
+                      Tria la teva opció de segon plat per al banquet:
+                    </p>
+                    <div className="dish-selector-grid" style={{ marginBottom: '20px' }}>
+                      <label className={`dish-option-card ${formData.mainCourse === 'Carn' ? 'selected' : ''}`}>
+                        <input 
+                          type="radio" 
+                          name="mainCourse" 
+                          value="Carn" 
+                          checked={formData.mainCourse === 'Carn'} 
+                          onChange={() => setFormData({...formData, mainCourse: 'Carn'})}
+                          className="dish-radio-native"
+                        />
+                        <span>Opció Carn</span>
+                      </label>
+
+                      <label className={`dish-option-card ${formData.mainCourse === 'Peix' ? 'selected' : ''}`}>
+                        <input 
+                          type="radio" 
+                          name="mainCourse" 
+                          value="Peix" 
+                          checked={formData.mainCourse === 'Peix'} 
+                          onChange={() => setFormData({...formData, mainCourse: 'Peix'})}
+                          className="dish-radio-native"
+                        />
+                        <span>Opció Peix</span>
+                      </label>
+                    </div>
+
                     <label className="form-label">Número d'acompanyants (addicionals a tu)</label>
                     <input 
                       type="number" 
@@ -891,39 +924,6 @@ export default function Home() {
                         ))}
                       </div>
                     )}
-
-                    {/* Main Course Selector (Carn o Peix) */}
-                    <label className="form-label" style={{ marginTop: '10px' }}>
-                      Plat Principal *
-                    </label>
-                    <p style={{ fontSize: '0.82rem', color: 'var(--text-muted)', marginBottom: '10px' }}>
-                      Tria la teva opció de segon plat per al banquet:
-                    </p>
-                    <div className="dish-selector-grid">
-                      <label className={`dish-option-card ${formData.mainCourse === 'Carn' ? 'selected' : ''}`}>
-                        <input 
-                          type="radio" 
-                          name="mainCourse" 
-                          value="Carn" 
-                          checked={formData.mainCourse === 'Carn'} 
-                          onChange={() => setFormData({...formData, mainCourse: 'Carn'})}
-                          className="dish-radio-native"
-                        />
-                        <span>Opció Carn</span>
-                      </label>
-
-                      <label className={`dish-option-card ${formData.mainCourse === 'Peix' ? 'selected' : ''}`}>
-                        <input 
-                          type="radio" 
-                          name="mainCourse" 
-                          value="Peix" 
-                          checked={formData.mainCourse === 'Peix'} 
-                          onChange={() => setFormData({...formData, mainCourse: 'Peix'})}
-                          className="dish-radio-native"
-                        />
-                        <span>Opció Peix</span>
-                      </label>
-                    </div>
 
                     <label className="form-label" style={{ marginTop: '16px' }}>
                       Al·lèrgies, intoleràncies o observacions dietètiques (opcional)
