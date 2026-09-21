@@ -696,6 +696,35 @@ export default function Home() {
               <p style={{ fontSize: '0.95rem', color: 'var(--text-muted)', margin: 0, lineHeight: 1.7 }}>
                 Us demanem que seguiu el nostre codi de vestimenta: si us plau, eviteu el color blanc i el vermell.
               </p>
+
+              {/* Color swatches */}
+              <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '14px', marginTop: '16px' }}>
+                <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: '#ffffff', padding: '5px 14px', borderRadius: '20px', border: '1px solid rgba(197, 155, 78, 0.3)', boxShadow: '0 2px 6px rgba(140, 115, 85, 0.08)' }}>
+                  <span style={{
+                    width: '20px',
+                    height: '20px',
+                    borderRadius: '50%',
+                    backgroundColor: '#ffffff',
+                    border: '2px solid rgba(140, 115, 85, 0.4)',
+                    boxShadow: '0 2px 5px rgba(0,0,0,0.1)',
+                    display: 'inline-block'
+                  }} />
+                  <span style={{ fontSize: '0.84rem', color: 'var(--primary-dark)', fontWeight: 600 }}>Blanc</span>
+                </div>
+
+                <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: '#ffffff', padding: '5px 14px', borderRadius: '20px', border: '1px solid rgba(197, 155, 78, 0.3)', boxShadow: '0 2px 6px rgba(140, 115, 85, 0.08)' }}>
+                  <span style={{
+                    width: '20px',
+                    height: '20px',
+                    borderRadius: '50%',
+                    backgroundColor: '#c62828',
+                    border: '2px solid rgba(198, 40, 40, 0.4)',
+                    boxShadow: '0 2px 6px rgba(198, 40, 40, 0.25)',
+                    display: 'inline-block'
+                  }} />
+                  <span style={{ fontSize: '0.84rem', color: 'var(--primary-dark)', fontWeight: 600 }}>Vermell</span>
+                </div>
+              </div>
             </div>
 
             {/* Card 2: Xarxes i Fotos */}
