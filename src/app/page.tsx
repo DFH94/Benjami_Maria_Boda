@@ -488,10 +488,14 @@ export default function Home() {
                 </p>
 
                 {/* Practical Guest Badges */}
-                <div style={{ marginBottom: '25px' }}>
-                  <div style={{ background: '#ffffff', padding: '10px 18px', borderRadius: '12px', border: '1px solid rgba(197, 155, 78, 0.25)', fontSize: '0.88rem', display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
-                    <span style={{ color: 'var(--accent-gold-dark)' }}>🚗</span>
-                    <span><strong>Pàrquing:</strong> Privat i gratuït dins del recinte de l'hotel.</span>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '10px', marginBottom: '25px' }}>
+                  <div style={{ background: '#ffffff', padding: '11px 16px', borderRadius: '12px', border: '1px solid rgba(197, 155, 78, 0.25)', fontSize: '0.86rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <span>🚗</span>
+                    <span><strong>Pàrquing:</strong> Privat i gratuït dins del recinte.</span>
+                  </div>
+                  <div style={{ background: '#ffffff', padding: '11px 16px', borderRadius: '12px', border: '1px solid rgba(197, 155, 78, 0.25)', fontSize: '0.86rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <span>🏨</span>
+                    <span><strong>Allotjament:</strong> No n'hi ha a l'hotel, està tot reservat 😅</span>
                   </div>
                 </div>
 
