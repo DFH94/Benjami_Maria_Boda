@@ -792,7 +792,7 @@ a {
 
 .guest-list-header {
   display: grid;
-  grid-template-columns: minmax(200px, 2.2fr) 100px 130px 130px minmax(150px, 1.6fr) 45px;
+  grid-template-columns: minmax(180px, 2.2fr) 95px 125px 110px 125px minmax(140px, 1.6fr) 45px;
   align-items: center;
   gap: 12px;
   padding: 16px 20px;
@@ -801,7 +801,7 @@ a {
   font-size: 1.08rem;
   color: var(--primary-color);
   font-weight: 600;
-  min-width: 860px;
+  min-width: 940px;
   background: #faf8f5;
   border-top-left-radius: 16px;
   border-top-right-radius: 16px;
@@ -811,7 +811,7 @@ a {
   display: flex;
   flex-direction: column;
   border-bottom: 1px solid rgba(217, 197, 178, 0.35);
-  min-width: 860px;
+  min-width: 940px;
 }
 
 .guest-group-block:last-child {
@@ -820,7 +820,7 @@ a {
 
 .guest-row-grid {
   display: grid;
-  grid-template-columns: minmax(200px, 2.2fr) 100px 130px 130px minmax(150px, 1.6fr) 45px;
+  grid-template-columns: minmax(180px, 2.2fr) 95px 125px 110px 125px minmax(140px, 1.6fr) 45px;
   align-items: center;
   gap: 12px;
   padding: 14px 20px;

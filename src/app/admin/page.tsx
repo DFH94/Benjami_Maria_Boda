@@ -633,7 +633,8 @@ export default function AdminPage() {
               <div className="guest-list-header">
                 <div>Convidat</div>
                 <div>Tipus</div>
-                <div>Assistència & Taxi</div>
+                <div>Assistència</div>
+                <div>Taxi Tortosa</div>
                 <div>Plat Principal</div>
                 <div>Al·lèrgies / Restriccions</div>
                 <div style={{ textAlign: 'center', fontSize: '0.85rem' }}>Acció</div>
@@ -678,7 +679,7 @@ export default function AdminPage() {
                         </span>
                       </div>
 
-                      {/* 3. Attendance & Taxi */}
+                      {/* 3. Attendance */}
                       <div>
                         <span style={{ 
                           background: guest.attending ? 'rgba(76, 175, 80, 0.12)' : 'rgba(244, 67, 54, 0.12)', 
@@ -693,27 +694,38 @@ export default function AdminPage() {
                         }}>
                           {guest.attending ? '✓ Sí, assisteix' : '✗ No assisteix'}
                         </span>
-                        {guest.attending && guest.needTaxi && (
-                          <div style={{ marginTop: '5px' }}>
+                      </div>
+
+                      {/* 4. Taxi Tortosa Column */}
+                      <div>
+                        {guest.attending ? (
+                          guest.needTaxi ? (
                             <span style={{ 
                               background: 'rgba(25, 118, 210, 0.12)', 
                               color: '#1565c0', 
                               border: '1px solid rgba(25, 118, 210, 0.35)', 
-                              padding: '2px 8px', 
-                              borderRadius: '12px', 
-                              fontSize: '0.74rem', 
-                              fontWeight: 600,
+                              padding: '4px 10px', 
+                              borderRadius: '16px', 
+                              fontSize: '0.8rem', 
+                              fontWeight: 600, 
+                              whiteSpace: 'nowrap',
                               display: 'inline-flex',
                               alignItems: 'center',
-                              gap: '3px'
+                              gap: '4px'
                             }}>
-                              🚕 Taxi Tortosa
+                              🚕 Sí
                             </span>
-                          </div>
+                          ) : (
+                            <span style={{ color: 'var(--text-muted)', fontSize: '0.85rem', fontWeight: 500 }}>
+                              No
+                            </span>
+                          )
+                        ) : (
+                          <span style={{ color: 'var(--text-muted)', fontSize: '0.85rem' }}>—</span>
                         )}
                       </div>
 
-                      {/* 4. Dish */}
+                      {/* 5. Dish */}
                       <div>
                         {guest.attending ? (
                           <span style={{ 
@@ -732,12 +744,12 @@ export default function AdminPage() {
                         ) : '—'}
                       </div>
 
-                      {/* 5. Dietary */}
+                      {/* 6. Dietary */}
                       <div style={{ fontSize: '0.86rem', color: guest.dietary ? 'var(--text-color)' : 'var(--text-muted)' }}>
                         {guest.dietary || '—'}
                       </div>
 
-                      {/* 6. Action: Delete */}
+                      {/* 7. Action: Delete */}
                       <div style={{ display: 'flex', justifyContent: 'center' }}>
                         <button 
                           onClick={() => handleDeleteGuest(guest.id, guest.name)}
@@ -793,8 +805,8 @@ export default function AdminPage() {
                           <div>
                             <span style={{ 
                               background: 'rgba(76, 175, 80, 0.12)', 
-                              color: '#2e7d32',
-                              border: '1px solid rgba(76, 175, 80, 0.3)',
+                              color: '#2e7d32', 
+                              border: '1px solid rgba(76, 175, 80, 0.3)', 
                               padding: '4px 10px', 
                               borderRadius: '20px', 
                               fontSize: '0.82rem', 
@@ -806,7 +818,20 @@ export default function AdminPage() {
                             </span>
                           </div>
 
-                          {/* 4. Dish */}
+                          {/* 4. Taxi */}
+                          <div>
+                            {guest.needTaxi ? (
+                              <span style={{ color: '#1565c0', fontSize: '0.8rem', fontWeight: 600, display: 'inline-flex', alignItems: 'center', gap: '3px' }}>
+                                🚕 Sí
+                              </span>
+                            ) : (
+                              <span style={{ color: 'var(--text-muted)', fontSize: '0.82rem' }}>
+                                No
+                              </span>
+                            )}
+                          </div>
+
+                          {/* 5. Dish */}
                           <div>
                             <span style={{ 
                               background: 'rgba(197, 155, 78, 0.12)', 
@@ -823,12 +848,12 @@ export default function AdminPage() {
                             </span>
                           </div>
 
-                          {/* 5. Dietary */}
+                          {/* 6. Dietary */}
                           <div style={{ fontSize: '0.86rem', color: guest.dietary ? 'var(--text-color)' : 'var(--text-muted)' }}>
                             {guest.dietary || '—'}
                           </div>
 
-                          {/* 6. Empty cell for companion row */}
+                          {/* 7. Empty cell for companion row */}
                           <div></div>
                         </div>
                       ))
