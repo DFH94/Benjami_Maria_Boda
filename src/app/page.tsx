@@ -339,7 +339,7 @@ export default function Home() {
                     src="/BenjaMaria.jpg" 
                     alt="Maria i Benjamí a París" 
                     className="fine-art-photo"
-                    style={{ width: '100%', maxHeight: '440px', objectFit: 'cover' }}
+                    style={{ width: '100%', maxHeight: '530px', objectFit: 'cover' }}
                   />
                 </div>
                 <div style={{ marginTop: '14px' }}>
