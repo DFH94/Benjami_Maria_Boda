@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Benjami & Maria",
+  title: "Maria & Benjamí",
   description: "Ens casem! Acompanya'ns en aquest dia tan especial.",
 };
 

@@ -17,6 +17,7 @@ interface Guest {
   companionDetails?: CompanionDetail[];
   mainCourse?: string;
   dietary?: string;
+  needTaxi?: boolean;
 }
 
 interface Attendee {
@@ -47,6 +48,36 @@ export default function AdminPage() {
 
   const [refreshing, setRefreshing] = useState(false);
 
+  // Helper to update seating state and automatically backup to localStorage
+  const updateSeatingState = (updater: (prev: Record<number, string>) => Record<number, string>) => {
+    setSeating(prev => {
+      const next = updater(prev);
+      try {
+        if (typeof window !== 'undefined') {
+          localStorage.setItem('wedding_seating_backup', JSON.stringify(next));
+        }
+      } catch {
+        // ignore storage errors
+      }
+      return next;
+    });
+  };
+
+  const fetchGuestsOnly = async (authToken: string) => {
+    try {
+      const resGuests = await fetch(`/api/guests?_t=${Date.now()}`, {
+        headers: { 'Authorization': `Bearer ${authToken}` },
+        cache: 'no-store'
+      });
+      if (resGuests.ok) {
+        const data = await resGuests.json();
+        setGuests(data.guests || []);
+      }
+    } catch {
+      // ignore
+    }
+  };
+
   const fetchGuestsAndSeating = async (authToken: string) => {
     try {
       setRefreshing(true);
@@ -67,7 +98,26 @@ export default function AdminPage() {
       });
       if (resSeating.ok) {
         const data = await resSeating.json();
-        setSeating(data.seating || {});
+        const serverSeating = data.seating || {};
+
+        // Check if there is a local backup with more seated guests
+        if (typeof window !== 'undefined') {
+          const localBackup = localStorage.getItem('wedding_seating_backup');
+          if (localBackup) {
+            try {
+              const parsed = JSON.parse(localBackup);
+              if (parsed && typeof parsed === 'object' && Object.keys(parsed).length > Object.keys(serverSeating).length) {
+                setSeating(parsed);
+                setAuthenticated(true);
+                setError('');
+                return;
+              }
+            } catch {
+              // ignore
+            }
+          }
+        }
+        setSeating(serverSeating);
       }
 
       setAuthenticated(true);
@@ -79,11 +129,11 @@ export default function AdminPage() {
     }
   };
 
-  // Auto-refresh guest list periodically when authenticated
+  // Auto-refresh guest list periodically when authenticated (WITHOUT wiping seating)
   useEffect(() => {
     if (!authenticated || !password) return;
     const interval = setInterval(() => {
-      fetchGuestsAndSeating(password);
+      fetchGuestsOnly(password);
     }, 12000);
     return () => clearInterval(interval);
   }, [authenticated, password]);
@@ -138,6 +188,9 @@ export default function AdminPage() {
   const handleSaveSeating = async () => {
     setSaveStatus('Desant...');
     try {
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('wedding_seating_backup', JSON.stringify(seating));
+      }
       const res = await fetch('/api/seating', {
         method: 'POST',
         headers: {
@@ -148,20 +201,42 @@ export default function AdminPage() {
       });
       if (res.ok) {
         setSaveStatus('✓ Desat correctament!');
-        setTimeout(() => setSaveStatus(''), 3000);
+        setTimeout(() => setSaveStatus(''), 3500);
       } else {
-        setSaveStatus('Error al desar');
+        setSaveStatus('✓ Desat localment');
+        setTimeout(() => setSaveStatus(''), 3500);
       }
     } catch {
-      setSaveStatus('Error al desar');
+      setSaveStatus('✓ Desat localment');
+      setTimeout(() => setSaveStatus(''), 3500);
+    }
+  };
+
+  const handleCopySeatingBackup = () => {
+    navigator.clipboard.writeText(JSON.stringify(seating, null, 2));
+    alert('✓ S\'ha copiat la distribució de la taula al porta-retalls.');
+  };
+
+  const handleRestoreSeatingBackup = () => {
+    const input = prompt('Enganxa aquí el codi JSON de la taula:');
+    if (input && input.trim()) {
+      try {
+        const parsed = JSON.parse(input.trim());
+        if (parsed && typeof parsed === 'object') {
+          updateSeatingState(() => parsed);
+          alert('✓ Plànol restaurat amb èxit! Recorda prémer "Desar Plànol".');
+        }
+      } catch {
+        alert('Codi no vàlid. Assegura\'t de copiar el format correcte.');
+      }
     }
   };
 
   // Generate flat list of attendees (confirmed guests + companions + couple)
   const getConfirmedAttendees = (): Attendee[] => {
     const list: Attendee[] = [
-      { id: 'nuvi-benja', name: 'Benjamí (Nuvi)' },
-      { id: 'nuvia-maria', name: 'Maria (Núvia)' }
+      { id: 'nuvia-maria', name: 'Maria (Núvia)' },
+      { id: 'nuvi-benja', name: 'Benjamí (Nuvi)' }
     ];
 
     guests
@@ -178,6 +253,7 @@ export default function AdminPage() {
             const compDisplayName = comp.name && comp.name.trim() 
               ? `${comp.name.trim()}${comp.isChild ? ' (Infant)' : ''}`
               : `${g.name} (Acomp. ${idx + 1}${comp.isChild ? ' - Infant' : ''})`;
+
             list.push({
               id: `guest-${g.id || g.name}-comp-${idx + 1}`,
               name: compDisplayName,
@@ -209,7 +285,7 @@ export default function AdminPage() {
 
   // Seat interaction handlers
   const handleAssignToSeat = (seatNum: number, attendeeName: string) => {
-    setSeating(prev => {
+    updateSeatingState(prev => {
       const updated = { ...prev };
       // If attendee was in another seat, remove from there first
       Object.keys(updated).forEach(k => {
@@ -224,7 +300,7 @@ export default function AdminPage() {
   };
 
   const handleRemoveFromSeat = (seatNum: number) => {
-    setSeating(prev => {
+    updateSeatingState(prev => {
       const updated = { ...prev };
       delete updated[seatNum];
       return updated;
@@ -256,21 +332,23 @@ export default function AdminPage() {
 
   const handleAutoAssign = () => {
     if (confirm('Vols omplir els seients buits automàticament amb els convidats pendents?')) {
-      const updated = { ...seating };
-      let unseated = unseatedAttendees.map(a => a.name);
-      
-      for (let i = 1; i <= TOTAL_SEATS; i++) {
-        if (!updated[i] && unseated.length > 0) {
-          updated[i] = unseated.shift()!;
+      updateSeatingState(prev => {
+        const updated = { ...prev };
+        let unseated = unseatedAttendees.map(a => a.name);
+        
+        for (let i = 1; i <= TOTAL_SEATS; i++) {
+          if (!updated[i] && unseated.length > 0) {
+            updated[i] = unseated.shift()!;
+          }
         }
-      }
-      setSeating(updated);
+        return updated;
+      });
     }
   };
 
   const handleClearSeating = () => {
     if (confirm('Segur que vols buidar tota la taula?')) {
-      setSeating({});
+      updateSeatingState(() => ({}));
     }
   };
 
@@ -405,6 +483,15 @@ export default function AdminPage() {
     }
   });
 
+  let totalTaxiPax = 0;
+  let totalTaxiGroups = 0;
+  attendingGuests.forEach(g => {
+    if (g.needTaxi) {
+      totalTaxiGroups++;
+      totalTaxiPax += 1 + (g.companions || 0);
+    }
+  });
+
   return (
     <main className="section" style={{ minHeight: '100vh', backgroundColor: 'var(--bg-color)', padding: '40px 16px' }}>
       <div className="container" style={{ maxWidth: '1350px' }}>
@@ -531,6 +618,11 @@ export default function AdminPage() {
                   <p style={{ fontSize: '0.9rem', margin: 0 }}>Menús Infantils: {totalKidsMenu}</p>
                 </div>
               )}
+              {totalTaxiPax > 0 && (
+                <div style={{ background: '#fff', border: '1px solid rgba(25, 118, 210, 0.6)', color: '#1565c0', padding: '10px 18px', borderRadius: '30px', fontWeight: 600 }}>
+                  <p style={{ fontSize: '0.9rem', margin: 0 }}>🚕 Taxi Tortosa: {totalTaxiPax} pax ({totalTaxiGroups} grups)</p>
+                </div>
+              )}
               <div style={{ background: '#fff', border: '1px solid rgba(217, 197, 178, 0.6)', color: 'var(--text-muted)', padding: '10px 18px', borderRadius: '30px' }}>
                 <p style={{ fontSize: '0.9rem', margin: 0 }}>No assisteixen: {totalDeclined}</p>
               </div>
@@ -541,7 +633,7 @@ export default function AdminPage() {
               <div className="guest-list-header">
                 <div>Convidat</div>
                 <div>Tipus</div>
-                <div>Assistència</div>
+                <div>Assistència & Taxi</div>
                 <div>Plat Principal</div>
                 <div>Al·lèrgies / Restriccions</div>
                 <div style={{ textAlign: 'center', fontSize: '0.85rem' }}>Acció</div>
@@ -586,7 +678,7 @@ export default function AdminPage() {
                         </span>
                       </div>
 
-                      {/* 3. Attendance */}
+                      {/* 3. Attendance & Taxi */}
                       <div>
                         <span style={{ 
                           background: guest.attending ? 'rgba(76, 175, 80, 0.12)' : 'rgba(244, 67, 54, 0.12)', 
@@ -601,6 +693,24 @@ export default function AdminPage() {
                         }}>
                           {guest.attending ? '✓ Sí, assisteix' : '✗ No assisteix'}
                         </span>
+                        {guest.attending && guest.needTaxi && (
+                          <div style={{ marginTop: '5px' }}>
+                            <span style={{ 
+                              background: 'rgba(25, 118, 210, 0.12)', 
+                              color: '#1565c0', 
+                              border: '1px solid rgba(25, 118, 210, 0.35)', 
+                              padding: '2px 8px', 
+                              borderRadius: '12px', 
+                              fontSize: '0.74rem', 
+                              fontWeight: 600,
+                              display: 'inline-flex',
+                              alignItems: 'center',
+                              gap: '3px'
+                            }}>
+                              🚕 Taxi Tortosa
+                            </span>
+                          </div>
+                        )}
                       </div>
 
                       {/* 4. Dish */}
@@ -770,6 +880,24 @@ export default function AdminPage() {
                 </button>
 
                 <button 
+                  onClick={handleCopySeatingBackup} 
+                  className="btn-secondary" 
+                  style={{ padding: '8px 14px', fontSize: '0.85rem' }}
+                  title="Copiar distribució de la taula al porta-retalls per seguretat"
+                >
+                  📋 Copiar Backup
+                </button>
+
+                <button 
+                  onClick={handleRestoreSeatingBackup} 
+                  className="btn-secondary" 
+                  style={{ padding: '8px 14px', fontSize: '0.85rem' }}
+                  title="Restaurar taula des d'un backup JSON"
+                >
+                  📥 Restaurar
+                </button>
+
+                <button 
                   onClick={handleSaveSeating} 
                   className="btn-primary" 
                   style={{ padding: '10px 22px', fontSize: '0.9rem' }}
@@ -782,7 +910,7 @@ export default function AdminPage() {
 
             {/* Instruction banner */}
             <div style={{ background: 'rgba(217, 197, 178, 0.25)', borderLeft: '4px solid var(--accent-gold)', padding: '12px 18px', borderRadius: '8px', marginBottom: '25px', fontSize: '0.9rem', color: 'var(--text-muted)' }}>
-              💡 <strong>Com funciona:</strong> Pots <strong>arrossegar i deixar anar (drag & drop)</strong> qualsevol persona de la llista inferior a la cadira que vulguis, o fer <strong>clic sobre el nom</strong> i després clic sobre la cadira. Pots canviar de lloc els convidats fent clic sobre el seu seient.
+              💡 <strong>Com funciona:</strong> Pots <strong>arrossegar i deixar anar (drag & drop)</strong> qualsevol persona a la seva cadira, o fer <strong>clic sobre el nom</strong> i després clic sobre la cadira. Els canvis es guarden automàticament a la memòria del teu navegador i es sincronitzen en prémer <strong>💾 Desar Plànol</strong>.
             </div>
 
             {/* Banquet Table Visual Scheme */}

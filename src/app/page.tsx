@@ -14,7 +14,8 @@ export default function Home() {
     attending: 'yes',
     companions: 0,
     mainCourse: 'Carn',
-    dietary: ''
+    dietary: '',
+    needTaxi: 'no'
   });
   const [companionDetails, setCompanionDetails] = useState<CompanionDetail[]>([]);
   const [selectedDietary, setSelectedDietary] = useState<string[]>([]);
@@ -85,8 +86,8 @@ export default function Home() {
   });
 
   useEffect(() => {
-    // Data i hora objectiu de la cerimònia (Tarda-Nit): 11 de Juny de 2027 a les 18:00h
-    const targetDate = new Date('2027-06-11T18:00:00');
+    // Data i hora objectiu de la cerimònia (Tarda-Nit): 11 de Juny de 2027 a les 19:00h
+    const targetDate = new Date('2027-06-11T19:00:00');
 
     const updateCountdown = () => {
       const now = new Date();
@@ -133,7 +134,8 @@ export default function Home() {
           companions: parseInt(formData.companions.toString(), 10) || 0,
           companionDetails: formData.attending === 'yes' ? companionDetails : [],
           mainCourse: formData.mainCourse || 'Carn',
-          dietary: compiledDietary
+          dietary: compiledDietary,
+          needTaxi: formData.needTaxi === 'yes'
         })
       });
       if (res.ok) {
@@ -189,7 +191,7 @@ export default function Home() {
           lineHeight: 1.1,
           letterSpacing: '1px'
         }}>
-          Benjami <span style={{ fontFamily: 'var(--font-script)', fontSize: 'clamp(2.5rem, 6vw, 4.8rem)', color: 'var(--accent-gold)', margin: '0 4px' }}>&</span> Maria
+          Maria <span style={{ fontFamily: 'var(--font-script)', fontSize: 'clamp(2.5rem, 6vw, 4.8rem)', color: 'var(--accent-gold)', margin: '0 4px' }}>&</span> Benjamí
         </h1>
 
         <div style={{
@@ -335,10 +337,26 @@ export default function Home() {
                   />
                   <img 
                     src="/BenjaMaria.jpg" 
-                    alt="Benjamí i Maria a París" 
+                    alt="Maria i Benjamí a París" 
                     className="fine-art-photo"
                     style={{ width: '100%', maxHeight: '440px', objectFit: 'cover' }}
                   />
+                </div>
+                <div style={{ marginTop: '14px' }}>
+                  <span style={{ 
+                    display: 'inline-block',
+                    background: 'rgba(197, 155, 78, 0.14)', 
+                    color: 'var(--accent-gold-dark)', 
+                    border: '1px solid rgba(197, 155, 78, 0.35)', 
+                    padding: '5px 16px', 
+                    borderRadius: '20px', 
+                    fontSize: '0.85rem', 
+                    fontWeight: 600, 
+                    letterSpacing: '1.5px', 
+                    textTransform: 'uppercase' 
+                  }}>
+                    La Promesa
+                  </span>
                 </div>
               </div>
 
@@ -363,7 +381,7 @@ export default function Home() {
                   fontWeight: 500,
                   lineHeight: 1.2
                 }}>
-                  Ens vam dir "Sí" a París
+                  Un &ldquo;Sí&rdquo; per sempre a París
                 </h3>
 
                 <p style={{ 
@@ -372,7 +390,7 @@ export default function Home() {
                   marginBottom: '16px',
                   lineHeight: '1.8' 
                 }}>
-                  Hi ha moments que canvien el destí per sempre. Sota la màgia dels carrers de París i la llum dels seus capvespres, vam decidir que el millor viatge de tots és el que recorrerem junts.
+                  Diuen que París té una màgia única, i per a nosaltres no va ser una excepció. Va ser allà dalt, al mirador de la Torre Eiffel, amb tot París als nostres peus, on ens vam mirar als ulls i vam dir-nos el &ldquo;Sí&rdquo; més especial per començar aquest nou capítol junts.
                 </p>
 
                 <p style={{ 
@@ -381,7 +399,7 @@ export default function Home() {
                   marginBottom: '26px',
                   lineHeight: '1.8' 
                 }}>
-                  Aquest 11 de juny celebrem la nostra promesa, envoltats de les persones que han format part de la nostra vida i que fan que aquest dia sigui immensament especial.
+                  El proper 11 de juny volem celebrar el nostre amor amb vosaltres, que formeu part de la nostra vida i fareu que aquest dia sigui inoblidable.
                 </p>
 
                 {/* Milestone Chips */}
@@ -451,10 +469,6 @@ export default function Home() {
 
               {/* Right: Venue description & info */}
               <div>
-                <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', background: 'rgba(197, 155, 78, 0.15)', color: 'var(--accent-gold-dark)', padding: '5px 14px', borderRadius: '20px', fontSize: '0.82rem', fontWeight: 700, letterSpacing: '1px', textTransform: 'uppercase', marginBottom: '12px' }}>
-                  Relais & Châteaux · 5 Estrelles
-                </div>
-
                 <h3 style={{ 
                   fontSize: '2.5rem', 
                   color: 'var(--primary-color)', 
@@ -469,17 +483,15 @@ export default function Home() {
                   Carrer Camí dels Molins, 2 · 43592 Xerta, Tarragona
                 </p>
 
-                <p style={{ fontSize: '1.05rem', color: 'var(--text-muted)', marginBottom: '22px' }}>
-                  La cerimònia començarà a les <strong>18:00h</strong> als jardins botànics de la finca amb la màgia del capvespre. Us preguem arribar amb 15 minuts d'antelació per acomodar-vos amb tranquil·litat.
+                <p style={{ fontSize: '1.05rem', color: 'var(--text-muted)', marginBottom: '22px', lineHeight: 1.7 }}>
+                  La cerimònia començarà a les <strong>19:00 h</strong>, sota la majestuositat d’un ficus centenari, testimoni silenciós de tantes celebracions d’amor. Entre les seves branques i a la llum màgica del capvespre, compartirem un moment molt especial. Us preguem arribar amb 15 minuts d’antelació per acomodar-vos amb tranquil·litat.
                 </p>
 
                 {/* Practical Guest Badges */}
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px', marginBottom: '25px' }}>
-                  <div style={{ background: '#ffffff', padding: '10px 14px', borderRadius: '12px', border: '1px solid rgba(197, 155, 78, 0.25)', fontSize: '0.85rem' }}>
-                    <strong>Pàrquing:</strong> Privat i gratuït dins del recinte.
-                  </div>
-                  <div style={{ background: '#ffffff', padding: '10px 14px', borderRadius: '12px', border: '1px solid rgba(197, 155, 78, 0.25)', fontSize: '0.85rem' }}>
-                    <strong>Allotjament:</strong> Disponibilitat a l'hotel i a Xerta.
+                <div style={{ marginBottom: '25px' }}>
+                  <div style={{ background: '#ffffff', padding: '10px 18px', borderRadius: '12px', border: '1px solid rgba(197, 155, 78, 0.25)', fontSize: '0.88rem', display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
+                    <span style={{ color: 'var(--accent-gold-dark)' }}>🚗</span>
+                    <span><strong>Pàrquing:</strong> Privat i gratuït dins del recinte de l'hotel.</span>
                   </div>
                 </div>
 
@@ -577,17 +589,17 @@ export default function Home() {
                 <div className="timeline-node" />
                 <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '6px' }}>
                   <span style={{ fontSize: '0.88rem', letterSpacing: '2px', textTransform: 'uppercase', color: 'var(--accent-gold)', fontWeight: 700, fontFamily: 'var(--font-cinzel)' }}>
-                    18:00h
+                    19:00h
                   </span>
                   <span style={{ background: 'rgba(197, 155, 78, 0.15)', color: 'var(--primary-dark)', padding: '2px 10px', borderRadius: '12px', fontSize: '0.78rem', fontWeight: 600 }}>
-                    Jardins de la Finca
+                    Sota el Ficus Centenari
                   </span>
                 </div>
                 <h3 style={{ fontSize: '1.75rem', margin: '0 0 8px 0', color: 'var(--primary-color)', fontFamily: 'var(--font-serif)' }}>
                   La Cerimònia Civil
                 </h3>
                 <p style={{ color: 'var(--text-muted)', fontSize: '1.02rem', margin: 0, lineHeight: 1.7 }}>
-                  El moment més màgic. Donarem el "Sí, vull" amb la llum daurada del capvespre sota els arbres centenaris de Villa Retiro.
+                  El moment més màgic. Ens donarem el "Sí, vull" sota la majestuositat d'un ficus centenari i la llum daurada del capvespre.
                 </p>
               </div>
 
@@ -596,17 +608,17 @@ export default function Home() {
                 <div className="timeline-node" />
                 <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '6px' }}>
                   <span style={{ fontSize: '0.88rem', letterSpacing: '2px', textTransform: 'uppercase', color: 'var(--accent-gold)', fontWeight: 700, fontFamily: 'var(--font-cinzel)' }}>
-                    19:15h
+                    20:15h
                   </span>
                   <span style={{ background: 'rgba(197, 155, 78, 0.15)', color: 'var(--primary-dark)', padding: '2px 10px', borderRadius: '12px', fontSize: '0.78rem', fontWeight: 600 }}>
                     Terrassa & Jardins
                   </span>
                 </div>
                 <h3 style={{ fontSize: '1.75rem', margin: '0 0 8px 0', color: 'var(--primary-color)', fontFamily: 'var(--font-serif)' }}>
-                  Còctel al Capvespre & Aperitius
+                  Aperitius & Showcookings
                 </h3>
                 <p style={{ color: 'var(--text-muted)', fontSize: '1.02rem', margin: 0, lineHeight: 1.7 }}>
-                  Música en viu, copes de benvinguda i una selecció gastronòmica exquisida per començar a brindar mentre cau el sol.
+                  Música en viu, copes de benvinguda i una selecció gastronòmica exquisida d'aperitius i showcookings per començar a brindar.
                 </p>
               </div>
 
@@ -615,17 +627,17 @@ export default function Home() {
                 <div className="timeline-node" />
                 <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '6px' }}>
                   <span style={{ fontSize: '0.88rem', letterSpacing: '2px', textTransform: 'uppercase', color: 'var(--accent-gold)', fontWeight: 700, fontFamily: 'var(--font-cinzel)' }}>
-                    21:00h
+                    22:00h
                   </span>
                   <span style={{ background: 'rgba(197, 155, 78, 0.15)', color: 'var(--primary-dark)', padding: '2px 10px', borderRadius: '12px', fontSize: '0.78rem', fontWeight: 600 }}>
-                    Saló Noble & Espelmes
+                    Saló Banquet & Espelmes
                   </span>
                 </div>
                 <h3 style={{ fontSize: '1.75rem', margin: '0 0 8px 0', color: 'var(--primary-color)', fontFamily: 'var(--font-serif)' }}>
                   Sopar de Gala Nupcial
                 </h3>
                 <p style={{ color: 'var(--text-muted)', fontSize: '1.02rem', margin: 0, lineHeight: 1.7 }}>
-                  Una vetllada gastronòmica inoblidable d'alta cuina, acompanyada d'una cuidada selecció de vins i discursos emotius.
+                  Una vetllada gastronòmica inoblidable d'alta cuina, acompanyada d'una cuidada selecció de vins i moments molt especials.
                 </p>
               </div>
 
@@ -634,7 +646,7 @@ export default function Home() {
                 <div className="timeline-node" />
                 <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '6px' }}>
                   <span style={{ fontSize: '0.88rem', letterSpacing: '2px', textTransform: 'uppercase', color: 'var(--accent-gold)', fontWeight: 700, fontFamily: 'var(--font-cinzel)' }}>
-                    23:30h
+                    00:30h
                   </span>
                   <span style={{ background: 'rgba(197, 155, 78, 0.15)', color: 'var(--primary-dark)', padding: '2px 10px', borderRadius: '12px', fontSize: '0.78rem', fontWeight: 600 }}>
                     Pista de Ball Nocturna
@@ -644,7 +656,7 @@ export default function Home() {
                   Ball Nupcial, Festa & Barra Lliure
                 </h3>
                 <p style={{ color: 'var(--text-muted)', fontSize: '1.02rem', margin: 0, lineHeight: 1.7 }}>
-                  Primer ball dels nuvis sota les llums de festa! DJ en directe, barra lliure de copes i còctels, photocall i ball fins a la matinada.
+                  Primer ball dels nuvis sota la llum de les estrelles! DJ en directe, barra lliure de copes i còctels, i festa per ballar fins a la matinada.
                 </p>
               </div>
 
@@ -664,7 +676,7 @@ export default function Home() {
           </p>
           <h2 className="section-title">Detalls Importants</h2>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '25px', maxWidth: '1000px', margin: '0 auto' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '25px', maxWidth: '760px', margin: '0 auto' }}>
             
             {/* Card 1: Dress Code */}
             <div className="glass-card-sm text-center">
@@ -677,29 +689,12 @@ export default function Home() {
               <p style={{ fontSize: '0.95rem', fontWeight: 600, color: 'var(--accent-gold)', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '8px' }}>
                 Elegància de Tarda-Nit / Cocktail
               </p>
-              <p style={{ fontSize: '0.92rem', color: 'var(--text-muted)', margin: 0, lineHeight: 1.6 }}>
-                En ser un casament de tarda-nit, recomanem vestits elegants llargs o midi, i tratges foscos o de gala. <em>(Si us plau, reserveu el color blanc per a la núvia)</em>.
+              <p style={{ fontSize: '0.95rem', color: 'var(--text-muted)', margin: 0, lineHeight: 1.7 }}>
+                Us demanem que seguiu el nostre codi de vestimenta: si us plau, eviteu el color blanc i el vermell.
               </p>
             </div>
 
-            {/* Card 2: Allotjament & Transport */}
-            <div className="glass-card-sm text-center">
-              <div style={{ width: '45px', height: '45px', borderRadius: '50%', background: 'rgba(197, 155, 78, 0.12)', color: 'var(--primary-color)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 15px auto' }}>
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
-                  <polyline points="9 22 9 12 15 12 15 22"></polyline>
-                </svg>
-              </div>
-              <h3 style={{ fontSize: '1.4rem', color: 'var(--primary-color)', marginBottom: '10px' }}>Allotjament & Transport</h3>
-              <p style={{ fontSize: '0.95rem', fontWeight: 600, color: 'var(--accent-gold)', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '8px' }}>
-                Gaudir amb Tranquil·litat
-              </p>
-              <p style={{ fontSize: '0.92rem', color: 'var(--text-muted)', margin: 0, lineHeight: 1.6 }}>
-                Perquè pugueu gaudir de la festa i de la barra lliure sense preocupar-vos del cotxe, hi ha opcions d'estada al mateix Hotel Villa Retiro i allotjaments a Xerta i Tortosa, a més de servei de taxis locals.
-              </p>
-            </div>
-
-            {/* Card 3: Xarxes i Fotos */}
+            {/* Card 2: Xarxes i Fotos */}
             <div className="glass-card-sm text-center">
               <div style={{ width: '45px', height: '45px', borderRadius: '50%', background: 'rgba(197, 155, 78, 0.12)', color: 'var(--primary-color)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 15px auto' }}>
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -709,9 +704,9 @@ export default function Home() {
               </div>
               <h3 style={{ fontSize: '1.4rem', color: 'var(--primary-color)', marginBottom: '10px' }}>Fotos & Moments</h3>
               <p style={{ fontSize: '0.95rem', fontWeight: 600, color: 'var(--accent-gold)', letterSpacing: '1px', marginBottom: '8px' }}>
-                #BenjaiMaria2027
+                #MariaiBenjami2027
               </p>
-              <p style={{ fontSize: '0.92rem', color: 'var(--text-muted)', margin: 0, lineHeight: 1.6 }}>
+              <p style={{ fontSize: '0.95rem', color: 'var(--text-muted)', margin: 0, lineHeight: 1.7 }}>
                 Etiqueteu les vostres fotos i vídeos a Instagram amb el nostre hashtag per crear junts el millor àlbum de records!
               </p>
             </div>
@@ -940,6 +935,39 @@ export default function Home() {
                         background: '#ffffff'
                       }}
                     />
+
+                    {/* Taxi Service Selector */}
+                    <label className="form-label" style={{ marginTop: '20px' }}>
+                      Servei de Taxi (Xerta a Tortosa)
+                    </label>
+                    <p style={{ fontSize: '0.82rem', color: 'var(--text-muted)', marginBottom: '10px' }}>
+                      Indica si voldreu fer ús del servei de taxi per tornar a Tortosa un cop finalitzi la festa:
+                    </p>
+                    <div className="dish-selector-grid" style={{ marginBottom: '22px' }}>
+                      <label className={`dish-option-card ${formData.needTaxi === 'no' ? 'selected' : ''}`}>
+                        <input 
+                          type="radio" 
+                          name="needTaxi" 
+                          value="no" 
+                          checked={formData.needTaxi === 'no'} 
+                          onChange={() => setFormData({...formData, needTaxi: 'no'})}
+                          className="dish-radio-native"
+                        />
+                        <span>No necessitem taxi</span>
+                      </label>
+
+                      <label className={`dish-option-card ${formData.needTaxi === 'yes' ? 'selected' : ''}`}>
+                        <input 
+                          type="radio" 
+                          name="needTaxi" 
+                          value="yes" 
+                          checked={formData.needTaxi === 'yes'} 
+                          onChange={() => setFormData({...formData, needTaxi: 'yes'})}
+                          className="dish-radio-native"
+                        />
+                        <span>🚕 Sí, necessitem taxi (Xerta → Tortosa)</span>
+                      </label>
+                    </div>
                   </>
                 )}
 
@@ -972,7 +1000,7 @@ export default function Home() {
         position: 'relative'
       }}>
         <div className="hero-crest" style={{ width: '60px', height: '60px', margin: '0 auto 15px auto', background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(197, 155, 78, 0.6)' }}>
-          <span className="hero-crest-text" style={{ fontSize: '1.8rem', color: 'var(--accent-gold-light)' }}>B&M</span>
+          <span className="hero-crest-text" style={{ fontSize: '1.8rem', color: 'var(--accent-gold-light)' }}>M&B</span>
         </div>
 
         <p style={{ 
@@ -981,7 +1009,7 @@ export default function Home() {
           fontFamily: 'var(--font-serif)',
           letterSpacing: '1px'
         }}>
-          Benjami & Maria
+          Maria & Benjamí
         </p>
 
         <p style={{ 

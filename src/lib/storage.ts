@@ -128,14 +128,23 @@ export async function readSeating(): Promise<Record<string, any>> {
   const redis = getRedis();
   if (redis) {
     try {
-      const data = await redis.get<Record<string, any>>('wedding_seating');
+      const data = await redis.get<any>('wedding_seating');
       if (data && typeof data === 'object') {
         memorySeating = data;
         return data;
+      } else if (typeof data === 'string') {
+        try {
+          const parsed = JSON.parse(data);
+          if (parsed && typeof parsed === 'object') {
+            memorySeating = parsed;
+            return parsed;
+          }
+        } catch {
+          // ignore
+        }
       }
-      return {};
     } catch (err) {
-      console.error('Redis readSeating error:', err);
+      console.warn('Redis readSeating error, falling back to local storage:', err);
     }
   }
 

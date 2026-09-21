@@ -21,6 +21,7 @@ export async function POST(request: Request) {
       companionDetails: Array.isArray(data.companionDetails) ? data.companionDetails : [],
       mainCourse: data.mainCourse || 'Carn',
       dietary: data.dietary || '',
+      needTaxi: Boolean(data.needTaxi),
       createdAt: new Date().toISOString()
     };
 
